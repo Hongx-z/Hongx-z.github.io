@@ -1,0 +1,94 @@
+1:"$Sreact.fragment"
+2:I[22016,["/_next/static/chunks/0n3i8tbd7tflo.js"],""]
+3:T12ea,<p><em>The Last Shift</em> runs eighteen minutes. It came out of about sixty-one hours of footage, shot across eleven weeks and two visits before that. These are the notes I kept while cutting it, lightly tidied, mostly unedited, because the untidy version is more useful to anyone doing this for the first time.</p>
+<h2 id="the-plan-and-how-little-of-it-survived"><a class="heading-anchor" href="#the-plan-and-how-little-of-it-survived">The plan, and how little of it survived</a></h2>
+<p>The original plan was a portrait of Fatima, who ran the extrusion line for nineteen years. I had a structure mapped out before I started: her history, the plant's history, the shutdown, an epilogue.</p>
+<p>Roughly a third of that survived. The plant's history went first — it was twelve good minutes of archival material that made the film <em>about a building</em>. The film is not about a building. It is about a person who is standing in one.</p>
+<p>The epilogue went next. I shot a genuinely beautiful sequence four months later, on the first day of demolition. It was the best-looking material I have ever filmed and it destroyed the film. The audience stopped thinking about Fatima and started thinking about the excavator.</p>
+<blockquote>
+<p>Cutting the prettiest thing you have is the whole job. I have not met a filmmaker who finds this easy and I have met several who refuse to do it.</p>
+</blockquote>
+<h2 id="what-the-film-is-actually-about"><a class="heading-anchor" href="#what-the-film-is-actually-about">What the film is actually about</a></h2>
+<p>It is about the ninety seconds at 03:40 when the compressed-air line was bled down.</p>
+<p>Everything else in the eighteen minutes is scaffolding for that. Once I understood that — which was about seven weeks in, on the fourth watch-through — the edit was straightforward, because the answer to every "does this stay" question became obvious.</p>
+<p>The rule I ended up using: <em>if a shot does not make the bleed-down louder, it goes.</em></p>
+<h2 id="the-scene-that-got-away"><a class="heading-anchor" href="#the-scene-that-got-away">The scene that got away</a></h2>
+<p>There is a scene I cannot use, and the whole reason it exists is a mistake I made.</p>
+<p>On the last night I stayed until 06:00, well past when I should have. At about 05:20 Fatima sat down on the floor of the control room, because there was nowhere else to sit and because her legs had stopped cooperating, and she talked for eleven minutes about her mother, who had also worked in the plant, and who had died in the year the plant was sold.</p>
+<p>It is the best eleven minutes of material I have ever shot. I asked her, in the spring, whether I could use it. She said no. She said: "That was not for the film."</p>
+<p>She was right. It was not. It was for her, and I happened to have a camera running, and the reason I have the footage is that I had overstayed and stopped being a filmmaker and started being a person she was talking to. Which is a good reason to have it and a bad reason to use it.</p>
+<p><strong>I have kept the file.</strong> It is on a drive, in a folder, with her name on it. I will not open it again unless she asks me to.</p>
+<h2 id="numbers-for-the-people-who-want-numbers"><a class="heading-anchor" href="#numbers-for-the-people-who-want-numbers">Numbers, for the people who want numbers</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Shoot days</td>
+<td>9</td>
+</tr>
+<tr>
+<td>Hours of footage</td>
+<td>61</td>
+</tr>
+<tr>
+<td>Ratio</td>
+<td>~203 : 1</td>
+</tr>
+<tr>
+<td>Longest single take used</td>
+<td>2 min 48 s</td>
+</tr>
+<tr>
+<td>Takes of the bleed-down</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Scenes cut after the first assembly</td>
+<td>11</td>
+</tr>
+</tbody>
+</table>
+<p>That ratio looks absurd and is normal for this kind of film. The four takes of the bleed-down were not for performance — there was only one shutdown. They were four camera positions, because I did not know which one would cut, and only one of them did.</p>
+<h2 id="what-i-would-do-differently"><a class="heading-anchor" href="#what-i-would-do-differently">What I would do differently</a></h2>
+<ul>
+<li><strong>Bring a second sound recorder and use it.</strong> I lost two usable scenes to a cable I did not check.</li>
+<li><strong>Shoot the paperwork.</strong> I nearly skipped the terminal scene because it was boring to film. It is now the opening.</li>
+<li><strong>Do not film the demolition.</strong> Nobody needs it. I knew this while filming it.</li>
+</ul>
+<hr>
+<p>The film screened four times this year. Fatima came to the second one, sat at the back, and left before the lights came up. She emailed me the next morning to say it was accurate. That is the only review I have ever cared about.</p>
+<p>Next time: fewer shoot days, longer ones, and a spare cable.</p>8:X
+d:X
+d:C
+0:{"buildId":"tT1icm3ps2sSIXuEKM6oe","data":[{"rsc":["$","$1","c",{"children":[["$","article",null,{"className":"container container--wide","children":[["$","header",null,{"className":"about-head","style":{"paddingBottom":0},"children":[["$","p",null,{"className":"eyebrow","children":["$","$L2",null,{"href":"/writing","className":"link-underline","children":"Writing"}]}],["$","h1",null,{"className":"article-header__title","children":"Making \"The Last Shift\""}],["$","p",null,{"className":"article-header__summary","children":"Production notes from eleven weeks inside a factory that was closing: what I shot, what I had to throw away, and the one scene that took four attempts to get and which the subject asked me to cut."}],["$","div",null,{"className":"article-header__foot","children":["$","span",null,{"className":"meta","children":[["$","time",null,{"dateTime":"2025-12-02","children":"2 Dec 2025"}],["$","span",null,{"className":"dot-sep","children":"·"}],"3 min read"]}]}]]}],null,["$","hr",null,{"className":"rule","style":{"marginTop":"var(--space-6)"}}],["$","div",null,{"className":"article-grid section section--tight","children":[["$","nav",null,{"className":"toc","aria-label":"Contents","children":[["$","p",null,{"className":"toc__title","children":"Contents"}],["$","ul",null,{"className":"toc__list","children":[["$","li","the-plan-and-how-little-of-it-survived",{"data-depth":2,"children":["$","a",null,{"href":"#the-plan-and-how-little-of-it-survived","children":"The plan, and how little of it survived"}]}],["$","li","what-the-film-is-actually-about",{"data-depth":2,"children":["$","a",null,{"href":"#what-the-film-is-actually-about","children":"What the film is actually about"}]}],["$","li","the-scene-that-got-away",{"data-depth":2,"children":["$","a",null,{"href":"#the-scene-that-got-away","children":"The scene that got away"}]}],["$","li","numbers-for-the-people-who-want-numbers",{"data-depth":2,"children":["$","a",null,{"href":"#numbers-for-the-people-who-want-numbers","children":"Numbers, for the people who want numbers"}]}],["$","li","what-i-would-do-differently",{"data-depth":2,"children":["$","a",null,{"href":"#what-i-would-do-differently","children":"What I would do differently"}]}]]}]]}],["$","div",null,{"className":"article-grid__body","children":[["$","div",null,{"className":"prose prose--article","dangerouslySetInnerHTML":{"__html":"$3"}}],"$L4","$L5"]}]]}]]}],null,"$L6"]}],"isPartial":"$@7","staleTime":"$8","varyParams":null},{"rsc":"$L9","isPartial":"$@a","staleTime":"$8","varyParams":null},{"rsc":"$Lb","isPartial":"$@c","staleTime":"$8","varyParams":"$d"},{"rsc":"$Le","isPartial":"$@f","staleTime":"$8","varyParams":"$d"},{"rsc":"$L10","isPartial":"$@11","staleTime":"$8","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@12","rootVaryParams":null,"needsRuntimeRequest":"$@13"}
+14:I[97367,["/_next/static/chunks/0n3i8tbd7tflo.js"],"OutletBoundary"]
+15:"$Sreact.suspense"
+17:I[97367,["/_next/static/chunks/0n3i8tbd7tflo.js"],"ViewportBoundary"]
+18:I[97367,["/_next/static/chunks/0n3i8tbd7tflo.js"],"MetadataBoundary"]
+19:I[27201,["/_next/static/chunks/0n3i8tbd7tflo.js"],"IconMark"]
+1a:I[39756,["/_next/static/chunks/0n3i8tbd7tflo.js"],"default"]
+1b:I[37457,["/_next/static/chunks/0n3i8tbd7tflo.js"],"default"]
+1c:I[36852,["/_next/static/chunks/0n3i8tbd7tflo.js"],"SiteHeader"]
+:HL["/_next/static/chunks/2w-ysyd45bhtu.css","style"]
+4:["$","footer",null,{"className":"article-foot","children":[["$","p",null,{"className":"meta","children":["Written ","2 Dec 2025",". If you want to argue with any of it,"," ",["$","a",null,{"className":"link-underline","href":"mailto:you@example.com","children":"email me"}],"."]}],["$","div",null,{"className":"article-foot__tags","children":["$","div",null,{"className":"tag-row","children":[["$","$L2","documentary",{"href":"/tags/documentary","className":"tag","children":"Documentary"}],["$","$L2","process",{"href":"/tags/process","className":"tag","children":"Process"}],["$","$L2","field-notes",{"href":"/tags/field-notes","className":"tag","children":"Field Notes"}]]}]}]]}]
+5:["$","section",null,{"style":{"marginTop":"var(--space-8)"},"children":[["$","div",null,{"className":"block-head","children":["$","h2",null,{"className":"block-head__title","style":{"fontSize":"var(--step-1)"},"children":"Related"}]}],["$","ol",null,{"className":"post-list post-list--compact","children":[["$","li","how-i-ask-a-stranger-to-trust-me",{"className":"post-item","children":[["$","time",null,{"className":"post-item__date","dateTime":"2025-08-04","children":"4 Aug 2025"}],["$","h3",null,{"className":"post-item__title","children":["$","$L2",null,{"href":"/writing/how-i-ask-a-stranger-to-trust-me","children":"How I Ask a Stranger to Trust Me"}]}],null,["$","div",null,{"className":"post-item__foot","children":[null,["$","span",null,{"className":"meta","children":"3 min read"}]]}]]}],["$","li","what-a-camera-does-to-a-room",{"className":"post-item","children":[["$","time",null,{"className":"post-item__date","dateTime":"2024-03-30","children":"30 Mar 2024"}],["$","h3",null,{"className":"post-item__title","children":["$","$L2",null,{"href":"/writing/what-a-camera-does-to-a-room","children":"What a Camera Does to a Room"}]}],null,["$","div",null,{"className":"post-item__foot","children":[null,["$","span",null,{"className":"meta","children":"3 min read"}]]}]]}],["$","li","notes-from-a-flood-plain",{"className":"post-item","children":[["$","time",null,{"className":"post-item__date","dateTime":"2025-05-22","children":"22 May 2025"}],["$","h3",null,{"className":"post-item__title","children":["$","$L2",null,{"href":"/writing/notes-from-a-flood-plain","children":"Notes from a Flood Plain"}]}],null,["$","div",null,{"className":"post-item__foot","children":[null,["$","span",null,{"className":"meta","children":"3 min read"}]]}]]}]]}]]}]
+6:["$","$L14",null,{"children":["$","$15",null,{"name":"Next.MetadataOutlet","children":"$@16"}]}]
+9:["$","$1","h",{"children":[null,["$","$L17",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L18",null,{"children":["$","$15",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Making \"The Last Shift\" — Your Name"}],["$","meta","1",{"name":"description","content":"Production notes from eleven weeks inside a factory that was closing: what I shot, what I had to throw away, and the one scene that took four attempts to get and which the subject asked me to cut."}],["$","meta","2",{"property":"og:title","content":"Making \"The Last Shift\""}],["$","meta","3",{"property":"og:description","content":"Production notes from eleven weeks inside a factory that was closing: what I shot, what I had to throw away, and the one scene that took four attempts to get and which the subject asked me to cut."}],["$","meta","4",{"property":"og:url","content":"https://username.github.io/personal-site/writing/making-the-last-shift/"}],["$","meta","5",{"property":"og:type","content":"article"}],["$","meta","6",{"property":"article:published_time","content":"2025-12-02"}],["$","meta","7",{"property":"article:tag","content":"Documentary"}],["$","meta","8",{"property":"article:tag","content":"Process"}],["$","meta","9",{"property":"article:tag","content":"Field Notes"}],["$","meta","10",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","11",{"name":"twitter:title","content":"Your Name — Writer · Documentary Filmmaker"}],["$","meta","12",{"name":"twitter:description","content":"A personal site in two halves: a written record of a life in work — a résumé told as a timeline — and a video record of other people, told as short documentaries."}],["$","link","13",{"rel":"icon","href":"/favicon.svg","type":"image/svg+xml"}],["$","$L19","14",{}]]}]}]}],null]}]
+b:["$","$1","c",{"children":[null,["$","$L1a",null,{"parallelRouterKey":"children","template":["$","$L1b",null,{}]}]]}]
+e:["$","$1","c",{"children":[null,["$","$L1a",null,{"parallelRouterKey":"children","template":["$","$L1b",null,{}]}]]}]
+10:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2w-ysyd45bhtu.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/0n3i8tbd7tflo.js","async":true}]],["$","html",null,{"lang":"en","children":["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"Skip to content"}],["$","$L1c",null,{}],["$","main",null,{"id":"main","children":["$","$L1a",null,{"parallelRouterKey":"children","template":["$","$L1b",null,{}],"notFound":[["$","section",null,{"className":"container container--prose section","children":[["$","p",null,{"className":"eyebrow","children":"404"}],["$","h1",null,{"className":"about-head__title","children":"This page is not here."}],["$","p",null,{"className":"about-head__headline lede","children":"It may have been renamed, or it may never have existed. Both happen."}],["$","p",null,{"className":"hero__links","children":[["$","$L2",null,{"href":"/","className":"link-underline","children":"Home →"}],["$","$L2",null,{"href":"/writing","className":"link-underline","children":"Writing →"}],["$","$L2",null,{"href":"/documentaries","className":"link-underline","children":"Films →"}]]}]]}],[]]}]}],["$","footer",null,{"className":"footer","children":["$","div",null,{"className":"container footer__inner","children":[["$","p",null,{"children":["© ",2026," ","Your Name",". Written and filmed by hand."]}],["$","div",null,{"className":"footer__links","children":[[["$","a","https://github.com/username",{"href":"https://github.com/username","className":"link-underline","target":"_blank","rel":"noreferrer noopener","children":"GitHub"}],["$","a","mailto:you@example.com",{"href":"mailto:you@example.com","className":"link-underline","children":"Email"}]],["$","$L2",null,{"href":"/writing","className":"link-underline","children":"Writing"}],["$","$L2",null,{"href":"/documentaries","className":"link-underline","children":"Films"}]]}]]}]}]]}]}]]}]
+16:null
+13:true
+8:300
+8:C
+12:0
+a:"$undefined"
+c:"$undefined"
+f:"$undefined"
+11:"$undefined"
+7:"$undefined"

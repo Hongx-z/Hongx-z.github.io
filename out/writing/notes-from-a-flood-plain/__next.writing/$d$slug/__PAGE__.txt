@@ -1,0 +1,110 @@
+1:"$Sreact.fragment"
+2:I[22016,["/_next/static/chunks/0n3i8tbd7tflo.js"],""]
+3:T1266,<p>The control room is on the second floor of a building that has been flooded twice. Both times were in the last decade. Nobody I met there found this funny, and I made the mistake of finding it funny on the first morning.</p>
+<h2 id="the-problem-in-one-paragraph"><a class="heading-anchor" href="#the-problem-in-one-paragraph">The problem, in one paragraph</a></h2>
+<p>The river has a hundred-year flood level, which is the level it is expected to reach once a century. In the last twenty-five years it has reached that level four times. The engineers do not describe this as a hundred-year flood level any more. They describe it as <em>the line on the wall</em>, and they point at it, and then they look at you to see whether you have understood.</p>
+<p>I understood on the third day.</p>
+<h2 id="what-they-actually-do"><a class="heading-anchor" href="#what-they-actually-do">What they actually do</a></h2>
+<p>Most of the work is not flood defence. It is <strong>argument</strong>, conducted in rooms, on a timescale of years, against a budget cycle of one year.</p>
+<ul>
+<li>They measure. Constantly, and mostly manually, because the automated gauges keep being destroyed.</li>
+<li>They model. A hydraulic model of the catchment runs on a workstation under a desk, and it is, by the admission of the person who maintains it, held together with tape.</li>
+<li>They negotiate. A flood defence upstream is a flood somewhere downstream, and the somewhere downstream has a council and a lawyer.</li>
+<li>They wait. The waiting is the bulk of it.</li>
+</ul>
+<h3 id="the-gauge-readings"><a class="heading-anchor" href="#the-gauge-readings">The gauge readings</a></h3>
+<p>Six days of manual readings from the upper station, which is the number that actually drives the operational decision:</p>
+<table>
+<thead>
+<tr>
+<th>Day</th>
+<th align="right">Rainfall (mm)</th>
+<th align="right">River level (m)</th>
+<th align="left">Gate setting</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mon</td>
+<td align="right">4.2</td>
+<td align="right">1.18</td>
+<td align="left">Open</td>
+</tr>
+<tr>
+<td>Tue</td>
+<td align="right">19.6</td>
+<td align="right">1.44</td>
+<td align="left">Open</td>
+</tr>
+<tr>
+<td>Wed</td>
+<td align="right">41.0</td>
+<td align="right">2.31</td>
+<td align="left">Half</td>
+</tr>
+<tr>
+<td>Thu</td>
+<td align="right">52.8</td>
+<td align="right">3.02</td>
+<td align="left"><strong>Half, monitoring</strong></td>
+</tr>
+<tr>
+<td>Fri</td>
+<td align="right">12.4</td>
+<td align="right">3.55</td>
+<td align="left">Half</td>
+</tr>
+<tr>
+<td>Sat</td>
+<td align="right">0.0</td>
+<td align="right">3.61</td>
+<td align="left">Closing</td>
+</tr>
+</tbody>
+</table>
+<p>The thing that jumps out is Saturday. No rain at all, and the river still rising — because the water that fell on Wednesday had only just arrived. Everything about this work happens on a delay of between one and three days, which is roughly the same delay as the political attention span.</p>
+<blockquote>
+<p>The water does not care which budget year it is. That is the whole problem, and it is why we lose.</p>
+</blockquote>
+<h2 id="the-script-under-the-desk"><a class="heading-anchor" href="#the-script-under-the-desk">The script under the desk</a></h2>
+<p>The model is driven by a script that a retired engineer wrote in 2009 and that nobody has fully read since. It is 1,400 lines long. It works, in the sense that the numbers it produces match the river. It is not documented.</p>
+<pre><code class="language-python"># WARNING: do not change the 0.87 below.
+# It is not a calibration constant. It is fudge.
+# Tested against 2004-2011 gauges. Changing it
+# breaks 2013. Nobody knows why. Ask Elif.
+stage = inflow_m3s * 0.87 / channel_width
+</code></pre>
+<p>I asked four people about the 0.87. Three of them laughed. The fourth, who is the only person who can modify the file without breaking it, said: "It is not fudge. It is the shape of the channel, expressed as a number by somebody who could not be bothered to explain himself."</p>
+<p>That is the most honest sentence about infrastructure I have ever been told.</p>
+<h2 id="what-i-took-away"><a class="heading-anchor" href="#what-i-took-away">What I took away</a></h2>
+<p>Since that week I have stopped thinking of infrastructure as things — gates, walls, pumps. It is a <strong>standing argument</strong> that a group of specific people are having, continuously, with a river that is not listening and a budget that resets every year.</p>
+<p>The argument is currently being won on technical merit and lost on timescale. I have no idea what happens next. Neither, it turns out, do they — which is the part I could not put in the piece I filed, and the part I have been thinking about since.</p>8:X
+d:X
+d:C
+0:{"buildId":"tT1icm3ps2sSIXuEKM6oe","data":[{"rsc":["$","$1","c",{"children":[["$","article",null,{"className":"container container--wide","children":[["$","header",null,{"className":"about-head","style":{"paddingBottom":0},"children":[["$","p",null,{"className":"eyebrow","children":["$","$L2",null,{"href":"/writing","className":"link-underline","children":"Writing"}]}],["$","h1",null,{"className":"article-header__title","children":"Notes from a Flood Plain"}],["$","p",null,{"className":"article-header__summary","children":"Six days with the engineers who manage a river that has already decided what it is going to do. Includes the rainfall table they use, which is less reassuring than you would hope."}],["$","div",null,{"className":"article-header__foot","children":["$","span",null,{"className":"meta","children":[["$","time",null,{"dateTime":"2025-05-22","children":"22 May 2025"}],["$","span",null,{"className":"dot-sep","children":"·"}],"3 min read"]}]}]]}],null,["$","hr",null,{"className":"rule","style":{"marginTop":"var(--space-6)"}}],["$","div",null,{"className":"article-grid section section--tight","children":[["$","nav",null,{"className":"toc","aria-label":"Contents","children":[["$","p",null,{"className":"toc__title","children":"Contents"}],["$","ul",null,{"className":"toc__list","children":[["$","li","the-problem-in-one-paragraph",{"data-depth":2,"children":["$","a",null,{"href":"#the-problem-in-one-paragraph","children":"The problem, in one paragraph"}]}],["$","li","what-they-actually-do",{"data-depth":2,"children":["$","a",null,{"href":"#what-they-actually-do","children":"What they actually do"}]}],["$","li","the-script-under-the-desk",{"data-depth":2,"children":["$","a",null,{"href":"#the-script-under-the-desk","children":"The script under the desk"}]}],["$","li","what-i-took-away",{"data-depth":2,"children":["$","a",null,{"href":"#what-i-took-away","children":"What I took away"}]}]]}]]}],["$","div",null,{"className":"article-grid__body","children":[["$","div",null,{"className":"prose prose--article","dangerouslySetInnerHTML":{"__html":"$3"}}],"$L4","$L5"]}]]}]]}],null,"$L6"]}],"isPartial":"$@7","staleTime":"$8","varyParams":null},{"rsc":"$L9","isPartial":"$@a","staleTime":"$8","varyParams":null},{"rsc":"$Lb","isPartial":"$@c","staleTime":"$8","varyParams":"$d"},{"rsc":"$Le","isPartial":"$@f","staleTime":"$8","varyParams":"$d"},{"rsc":"$L10","isPartial":"$@11","staleTime":"$8","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@12","rootVaryParams":null,"needsRuntimeRequest":"$@13"}
+14:I[97367,["/_next/static/chunks/0n3i8tbd7tflo.js"],"OutletBoundary"]
+15:"$Sreact.suspense"
+17:I[97367,["/_next/static/chunks/0n3i8tbd7tflo.js"],"ViewportBoundary"]
+18:I[97367,["/_next/static/chunks/0n3i8tbd7tflo.js"],"MetadataBoundary"]
+19:I[27201,["/_next/static/chunks/0n3i8tbd7tflo.js"],"IconMark"]
+1a:I[39756,["/_next/static/chunks/0n3i8tbd7tflo.js"],"default"]
+1b:I[37457,["/_next/static/chunks/0n3i8tbd7tflo.js"],"default"]
+1c:I[36852,["/_next/static/chunks/0n3i8tbd7tflo.js"],"SiteHeader"]
+:HL["/_next/static/chunks/2w-ysyd45bhtu.css","style"]
+4:["$","footer",null,{"className":"article-foot","children":[["$","p",null,{"className":"meta","children":["Written ","22 May 2025",". If you want to argue with any of it,"," ",["$","a",null,{"className":"link-underline","href":"mailto:you@example.com","children":"email me"}],"."]}],["$","div",null,{"className":"article-foot__tags","children":["$","div",null,{"className":"tag-row","children":[["$","$L2","field-notes",{"href":"/tags/field-notes","className":"tag","children":"Field Notes"}],["$","$L2","infrastructure",{"href":"/tags/infrastructure","className":"tag","children":"Infrastructure"}]]}]}]]}]
+5:["$","section",null,{"style":{"marginTop":"var(--space-8)"},"children":[["$","div",null,{"className":"block-head","children":["$","h2",null,{"className":"block-head__title","style":{"fontSize":"var(--step-1)"},"children":"Related"}]}],["$","ol",null,{"className":"post-list post-list--compact","children":[["$","li","making-the-last-shift",{"className":"post-item","children":[["$","time",null,{"className":"post-item__date","dateTime":"2025-12-02","children":"2 Dec 2025"}],["$","h3",null,{"className":"post-item__title","children":["$","$L2",null,{"href":"/writing/making-the-last-shift","children":"Making \"The Last Shift\""}]}],null,["$","div",null,{"className":"post-item__foot","children":[null,["$","span",null,{"className":"meta","children":"3 min read"}]]}]]}],["$","li","the-last-shift",{"className":"post-item","children":[["$","time",null,{"className":"post-item__date","dateTime":"2025-11-18","children":"18 Nov 2025"}],["$","h3",null,{"className":"post-item__title","children":["$","$L2",null,{"href":"/writing/the-last-shift","children":"The Last Shift"}]}],null,["$","div",null,{"className":"post-item__foot","children":[null,["$","span",null,{"className":"meta","children":"3 min read"}]]}]]}]]}]]}]
+6:["$","$L14",null,{"children":["$","$15",null,{"name":"Next.MetadataOutlet","children":"$@16"}]}]
+9:["$","$1","h",{"children":[null,["$","$L17",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L18",null,{"children":["$","$15",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Notes from a Flood Plain — Your Name"}],["$","meta","1",{"name":"description","content":"Six days with the engineers who manage a river that has already decided what it is going to do. Includes the rainfall table they use, which is less reassuring than you would hope."}],["$","meta","2",{"property":"og:title","content":"Notes from a Flood Plain"}],["$","meta","3",{"property":"og:description","content":"Six days with the engineers who manage a river that has already decided what it is going to do. Includes the rainfall table they use, which is less reassuring than you would hope."}],["$","meta","4",{"property":"og:url","content":"https://username.github.io/personal-site/writing/notes-from-a-flood-plain/"}],["$","meta","5",{"property":"og:type","content":"article"}],["$","meta","6",{"property":"article:published_time","content":"2025-05-22"}],["$","meta","7",{"property":"article:tag","content":"Field Notes"}],["$","meta","8",{"property":"article:tag","content":"Infrastructure"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"Your Name — Writer · Documentary Filmmaker"}],["$","meta","11",{"name":"twitter:description","content":"A personal site in two halves: a written record of a life in work — a résumé told as a timeline — and a video record of other people, told as short documentaries."}],["$","link","12",{"rel":"icon","href":"/favicon.svg","type":"image/svg+xml"}],["$","$L19","13",{}]]}]}]}],null]}]
+b:["$","$1","c",{"children":[null,["$","$L1a",null,{"parallelRouterKey":"children","template":["$","$L1b",null,{}]}]]}]
+e:["$","$1","c",{"children":[null,["$","$L1a",null,{"parallelRouterKey":"children","template":["$","$L1b",null,{}]}]]}]
+10:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2w-ysyd45bhtu.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/0n3i8tbd7tflo.js","async":true}]],["$","html",null,{"lang":"en","children":["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"Skip to content"}],["$","$L1c",null,{}],["$","main",null,{"id":"main","children":["$","$L1a",null,{"parallelRouterKey":"children","template":["$","$L1b",null,{}],"notFound":[["$","section",null,{"className":"container container--prose section","children":[["$","p",null,{"className":"eyebrow","children":"404"}],["$","h1",null,{"className":"about-head__title","children":"This page is not here."}],["$","p",null,{"className":"about-head__headline lede","children":"It may have been renamed, or it may never have existed. Both happen."}],["$","p",null,{"className":"hero__links","children":[["$","$L2",null,{"href":"/","className":"link-underline","children":"Home →"}],["$","$L2",null,{"href":"/writing","className":"link-underline","children":"Writing →"}],["$","$L2",null,{"href":"/documentaries","className":"link-underline","children":"Films →"}]]}]]}],[]]}]}],["$","footer",null,{"className":"footer","children":["$","div",null,{"className":"container footer__inner","children":[["$","p",null,{"children":["© ",2026," ","Your Name",". Written and filmed by hand."]}],["$","div",null,{"className":"footer__links","children":[[["$","a","https://github.com/username",{"href":"https://github.com/username","className":"link-underline","target":"_blank","rel":"noreferrer noopener","children":"GitHub"}],["$","a","mailto:you@example.com",{"href":"mailto:you@example.com","className":"link-underline","children":"Email"}]],["$","$L2",null,{"href":"/writing","className":"link-underline","children":"Writing"}],["$","$L2",null,{"href":"/documentaries","className":"link-underline","children":"Films"}]]}]]}]}]]}]}]]}]
+16:null
+13:true
+8:300
+8:C
+12:0
+a:"$undefined"
+c:"$undefined"
+f:"$undefined"
+11:"$undefined"
+7:"$undefined"
