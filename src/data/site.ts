@@ -1,24 +1,44 @@
 /**
  * Site-wide configuration.
  * ---------------------------------------------------------------------------
- * Everything you are likely to want to change on day one lives here.
+ * This is the first file to open. Everything you are likely to want to change
+ * on day one lives here.
  */
 
+/**
+ * How you introduce yourself.
+ *
+ * Deliberately a list, not a sentence: add a line whenever your work takes a
+ * new shape, remove one when it stops being true. It flows through the
+ * masthead, the browser tab and every social preview automatically.
+ *
+ * @example ['Writer', 'Documentary filmmaker', 'Radio producer']
+ */
+export const roles: string[] = ['Writer', 'Documentary filmmaker'];
+
 export const site = {
-  /** Shown in the browser tab and as the masthead of every page. */
-  name: 'Your Name',
-  /** Short line under the masthead on the home page. */
-  tagline: 'Writer · Documentary Filmmaker',
-  /** Used for <meta name="description"> and RSS/social previews. */
+  /** Your name, as you want it to appear. */
+  name: 'H. Zhu',
+
+  /** Derived from `roles` above — edit that array, not this line. */
+  tagline: roles.join(' · '),
+
+  /**
+   * The same list, for anywhere that wants to render it as separate items.
+   */
+  roles,
+
+  /** Used for <meta name="description"> and social previews. */
   description:
-    'A personal site in two halves: a written record of a life in work — a résumé told as a timeline — and a video record of other people, told as short documentaries.',
-  /** One sentence, shown on the home page hero. */
+    'A personal site in two halves: a written record of the work I have done, and a filmed record of other people. Every word and every video is a file in the repository.',
+
+  /** One or two sentences, shown on the home page. */
   intro:
-    'I write about the work I have done and the places it took me. I also point a camera at strangers until they stop being strangers.',
+    'The first half is written: what I have done, what I was given for it, and the articles that came out of it. The second half is filmed: short documentaries, one person each. Neither half is meant to be the whole of what I am.',
 
   /**
    * Base URL of the deployed site. Used for canonical links and absolute
-   * social-preview images. Update after your first deploy.
+   * social-preview URLs. Update after your first deploy (see the manual).
    */
   url: 'https://username.github.io/personal-site',
 
@@ -32,7 +52,7 @@ export const site = {
     { label: 'Email', href: 'mailto:you@example.com' },
   ],
 
-  /** Primary navigation. Order matters. */
+  /** Primary navigation. Order matters; labels are yours to change. */
   nav: [
     { label: 'About me', href: '/about' },
     { label: 'Writing', href: '/writing' },

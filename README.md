@@ -7,6 +7,8 @@ A personal website in two halves:
 
 Built with **Next.js (static export)** so it hosts on **GitHub Pages** for free, with no server and no database. All content is Markdown files in the repository.
 
+> **中文详细说明书：[`docs/使用说明书.md`](docs/使用说明书.md)** — 从环境准备、本地运行、生成 `out/` 目录，到内容编辑、改样式、部署上线的完整操作手册。第一次上手建议直接看这份。
+
 ---
 
 ## Contents
@@ -43,6 +45,14 @@ npm run preview   # serves ./out at http://localhost:3000
 
 `npm run build` is the real test: it type-checks everything and prerenders every page. If a Markdown file is malformed, the build fails with the filename in the error.
 
+**Do not open `out/index.html` by double-clicking it.** Asset paths are absolute (`/_next/...`), so over `file://` the browser looks for them at the root of your filesystem and you get an unstyled page. Always use `npm run preview`.
+
+## Starting a new piece of content
+
+`content/articles/_TEMPLATE.md` and `content/documentaries/_TEMPLATE.md` are fully commented templates. Copy one, rename it, fill it in.
+
+Files whose name starts with `_` or `.` are ignored by the build, so templates can live safely inside the content directories.
+
 ---
 
 ## Where everything lives
@@ -61,13 +71,14 @@ src/
     writing/page.tsx     /writing          article list
     writing/[slug]/      /writing/<slug>   article detail
     tags/page.tsx        /tags             all tags
-    tags/[tag]/          /tags/<tag>       articles under one tag
+    tags/[tag]/          /tags/<tag>       articles and films under one tag
     documentaries/       /documentaries    film grid
     documentaries/[slug] /documentaries/<slug>
+    sitemap.ts           /sitemap.xml
     globals.css          all styling
   components/        <- reusable UI pieces
   data/
-    site.ts          <- name, tagline, nav, social links  (start here)
+    site.ts          <- name, roles, nav, social links  (start here)
     resume.ts        <- the timeline and honors arrays
   lib/
     articles.ts      <- reads content/articles
@@ -78,8 +89,10 @@ src/
     poster.ts        <- procedural placeholder art for films
     base.ts          <- GitHub Pages sub-path helper
 
-public/              <- static files served as-is (images, favicon, .nojekyll)
-.github/workflows/   <- the deploy workflow
+public/               <- static files served as-is (images, favicon, .nojekyll)
+scripts/serve-out.mjs <- zero-dependency preview server for ./out
+docs/使用说明书.md     <- the detailed manual, in Chinese
+.github/workflows/    <- the deploy workflow
 ```
 
 ---
@@ -236,7 +249,8 @@ The prose at the top of the About page lives separately, in **`content/pages/abo
 
 **`src/data/site.ts`** — the first file to edit. It controls:
 
-- `name`, `tagline`, `description`, `intro`
+- `roles` — how you introduce yourself. A list, not a sentence: add a line when your work takes a new shape and the masthead, page titles and social previews follow automatically.
+- `name`, `description`, `intro`
 - `email`, `location`
 - `links` — the footer/nav social links
 - `nav` — the top navigation
@@ -316,7 +330,10 @@ GitHub Pages is case-sensitive and the local Windows filesystem is often not. Ch
 A Markdown file in `content/` is missing frontmatter. The error names the file.
 
 **A new article does not appear.**
-Check the filename ends in `.md`, that `date` is present and valid, and that `draft` is not `true`.
+Check the filename ends in `.md`, that it is in `content/articles/` (not `content/pages/`), that `date` is present and valid, and that `draft` is not `true`. Note that files whose name starts with `_` are ignored on purpose.
+
+**Everything is unstyled after opening `out/index.html` directly.**
+Expected. Asset paths are absolute; over `file://` the browser cannot resolve them. Use `npm run preview`.
 
 **`npm run build` complains about a lockfile in the home directory.**
 Already handled — `next.config.mjs` scopes Turbopack to the project root.

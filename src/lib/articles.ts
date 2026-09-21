@@ -3,6 +3,7 @@ import path from 'node:path';
 import matter from 'gray-matter';
 
 import { readingTime, slugify } from '@/lib/format';
+import { listMarkdownSlugs } from '@/lib/content';
 import { extractHeadings, markdownToHtml, toPlainText, type Heading } from '@/lib/markdown';
 
 const ARTICLES_DIR = path.join(process.cwd(), 'content', 'articles');
@@ -88,11 +89,7 @@ function readArticleFile(slug: string): ArticleMeta & { body: string } {
 /* -------------------------------------------------------------------------- */
 
 export function getArticleSlugs(): string[] {
-  if (!fs.existsSync(ARTICLES_DIR)) return [];
-  return fs
-    .readdirSync(ARTICLES_DIR)
-    .filter((file) => file.endsWith('.md'))
-    .map((file) => file.replace(/\.md$/, ''));
+  return listMarkdownSlugs(ARTICLES_DIR);
 }
 
 /** Drafts are visible while running `npm run dev`, hidden in production builds. */

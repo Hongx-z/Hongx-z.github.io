@@ -3,6 +3,7 @@ import path from 'node:path';
 import matter from 'gray-matter';
 
 import { slugify } from '@/lib/format';
+import { listMarkdownSlugs } from '@/lib/content';
 import { extractHeadings, markdownToHtml, toPlainText, type Heading } from '@/lib/markdown';
 
 const FILMS_DIR = path.join(process.cwd(), 'content', 'documentaries');
@@ -203,11 +204,7 @@ function readFilmFile(slug: string): DocumentaryMeta & { body: string } {
 /* -------------------------------------------------------------------------- */
 
 export function getDocumentarySlugs(): string[] {
-  if (!fs.existsSync(FILMS_DIR)) return [];
-  return fs
-    .readdirSync(FILMS_DIR)
-    .filter((file) => file.endsWith('.md'))
-    .map((file) => file.replace(/\.md$/, ''));
+  return listMarkdownSlugs(FILMS_DIR);
 }
 
 function includeDrafts(): boolean {
