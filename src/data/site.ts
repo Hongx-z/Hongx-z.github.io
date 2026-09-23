@@ -122,6 +122,24 @@ export const site = {
   },
 
   /**
+   * The private "note to myself" box at the end of the Field notes list on
+   * /now. Unlocked with a GitHub token, it writes straight into the
+   * repository: saving a note is a commit to content/notes/, and the site
+   * rebuilds itself from it a minute later. Nothing else about it is public —
+   * readers see the notes, never the controls.
+   *
+   * Leave `repo` empty and the box disappears completely.
+   */
+  editor: {
+    /** 'owner/repo' — the repository that publishes this site. */
+    repo: 'Hongx-z/Hongx-z.github.io',
+    /** The branch commits go to; the deploy workflow watches this one. */
+    branch: 'main',
+    /** Must match NOTES_DIR in src/lib/notes.ts. */
+    notesDir: 'content/notes',
+  },
+
+  /**
    * A hidden line, shown to readers who enter the Konami code on any page
    * (↑ ↑ ↓ ↓ ← → ← → B A). Use it for whatever should only reach the people
    * who go looking. Leave empty to disable the easter egg.

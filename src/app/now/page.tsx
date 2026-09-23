@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
+import { FieldNoteComposer } from '@/components/FieldNoteComposer';
 import { site } from '@/data/site';
-import { formatDayMonth } from '@/lib/format';
 import { getAllNotes } from '@/lib/notes';
 import { getNowPage } from '@/lib/pages';
 
@@ -76,24 +76,10 @@ export default async function NowPage() {
           .
         </p>
 
-        {notes.length > 0 ? (
-          <ol className="field-notes">
-            {notes.map((note) => (
-              <li key={note.slug} className="field-notes__item">
-                <p className="field-notes__date meta">{formatDayMonth(note.date)}</p>
-                <div
-                  className="field-notes__body prose"
-                  dangerouslySetInnerHTML={{ __html: note.html }}
-                />
-              </li>
-            ))}
-          </ol>
-        ) : (
-          <div className="empty-state">
-            No field notes yet. Add a Markdown file to <code>content/notes/</code> — the filename does
-            not matter, only the <code>date</code> at the top.
-          </div>
-        )}
+        {/* The list and the private "note to myself" box live together, so the
+            author's edits and the readers' view never disagree. See 9.5 in the
+            manual for the token it asks for. */}
+        <FieldNoteComposer notes={notes} />
       </section>
 
       <hr className="rule" style={{ marginBlock: 'var(--space-7)' }} />

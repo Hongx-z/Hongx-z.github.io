@@ -1960,6 +1960,212 @@ main {
   }
 }
 
+/* The field-notes desk: the author's private box on /now ------------------------- */
+
+.field-notes__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.field-notes__actions {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+.note-link {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: var(--step--1);
+  color: var(--ink-faint);
+  text-decoration: underline;
+  text-decoration-color: var(--rule-strong);
+  text-underline-offset: 3px;
+}
+
+.note-link:hover,
+.note-link:focus-visible {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+
+.note-link:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+/* A note that was just written or edited here, still waiting for its build. */
+.field-notes__item--fresh {
+  border-left-color: var(--accent);
+}
+
+.field-notes__body--raw {
+  white-space: pre-wrap;
+}
+
+.field-notes__pending {
+  margin-block-start: var(--space-2);
+  color: var(--ink-faint);
+  font-style: italic;
+}
+
+.note-desk {
+  margin-block-start: var(--space-7);
+}
+
+/* Deliberately the quietest control on the page. */
+.note-desk__toggle {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: var(--step--1);
+  color: var(--ink-faint);
+  opacity: 0.75;
+  transition: opacity 200ms ease, color 200ms ease;
+}
+
+.note-desk__toggle:hover,
+.note-desk__toggle:focus-visible {
+  color: var(--accent);
+  opacity: 1;
+}
+
+.note-panel {
+  margin-block-start: var(--space-5);
+  max-width: 40rem;
+  padding: var(--space-5);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--paper-raised);
+  display: grid;
+  gap: var(--space-4);
+}
+
+.note-panel--inline {
+  margin-block-start: var(--space-4);
+  padding: var(--space-4);
+  background: var(--paper-sunk);
+}
+
+.note-panel__lede {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-3);
+  font-size: var(--step--1);
+  color: var(--ink-muted);
+}
+
+.note-panel__date {
+  font-family: var(--font-serif);
+  font-size: var(--step-1);
+  color: var(--ink);
+}
+
+.note-panel__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.note-panel__input {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  resize: vertical;
+}
+
+.note-panel__input::placeholder {
+  color: var(--ink-faint);
+  font-style: italic;
+}
+
+.note-panel__input:disabled {
+  opacity: 0.6;
+}
+
+/* Inside a row, the field shares the line with its button instead of filling it. */
+.note-panel__row .note-panel__input {
+  flex: 1 1 18rem;
+  width: auto;
+}
+
+.note-panel__fine {
+  font-size: var(--step--1);
+  color: var(--ink-faint);
+  line-height: 1.55;
+}
+
+.note-panel__fine code {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+}
+
+.note-panel__message {
+  margin-block-start: var(--space-4);
+  max-width: 40rem;
+  font-size: var(--step--1);
+  color: var(--ink-muted);
+}
+
+.note-panel__message--error {
+  color: var(--accent);
+}
+
+.note-panel__message--ok {
+  color: var(--ink-soft);
+}
+
+/* Two buttons, borrowed by anything that ever needs them. */
+.btn {
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius);
+  background: var(--paper-raised);
+  color: var(--ink-soft);
+  padding: 0.45rem 0.9rem;
+  font-size: var(--step--1);
+  cursor: pointer;
+  transition: color 200ms ease, border-color 200ms ease, background 200ms ease;
+}
+
+.btn:hover:not(:disabled),
+.btn:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.btn--primary {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: var(--accent-soft);
+}
+
+.btn--quiet {
+  border-color: transparent;
+  background: none;
+  color: var(--ink-faint);
+}
+
+.btn:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
 /* Blank page: the ❋ at the foot of the page empties it ---------------------------- */
 
 /* The page is still here, just out of sight. Hiding it with visibility (rather
