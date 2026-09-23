@@ -63,6 +63,7 @@ content/
   documentaries/     <- one .md file per film; filename = URL slug
   pages/
     about.md         <- the prose on the About me page
+    colophon.md      <- the quiet "making of" page (/colophon)
 
 src/
   app/               <- pages (Next.js App Router)
@@ -74,9 +75,12 @@ src/
     tags/[tag]/          /tags/<tag>       articles and films under one tag
     documentaries/       /documentaries    film grid
     documentaries/[slug] /documentaries/<slug>
+    guestbook/page.tsx   /guestbook        comments via giscus
+    colophon/page.tsx    /colophon         the making-of page
     sitemap.ts           /sitemap.xml
     globals.css          all styling
-  components/        <- reusable UI pieces
+  components/        <- reusable UI pieces (incl. AudioToggle, EasterEgg,
+                        ReadingProgress, CopyLinkButton, BackToTop, LiveClock)
   data/
     site.ts          <- name, roles, nav, social links  (start here)
     resume.ts        <- the timeline and honors arrays
@@ -90,6 +94,7 @@ src/
     base.ts          <- GitHub Pages sub-path helper
 
 public/               <- static files served as-is (images, favicon, .nojekyll)
+public/audio/         <- background music goes here (optional; see site.ts)
 scripts/serve-out.mjs <- zero-dependency preview server for ./out
 docs/使用说明书.md     <- the detailed manual, in Chinese
 .github/workflows/    <- the deploy workflow
@@ -256,6 +261,18 @@ The prose at the top of the About page lives separately, in **`content/pages/abo
 - `nav` — the top navigation
 - `url` — the deployed base URL, used for canonical links
 - `filmChannelUrl` — optional; if set, a "subscribe to the channel" link appears on the films page
+
+### Optional extras
+
+Each of these hides itself completely until you configure it in `src/data/site.ts`:
+
+- **Guestbook** (`giscus.*`) — comments stored in your repo's GitHub Discussions via [giscus](https://giscus.app). Fill in `repo`, `repoId`, `category`, `categoryId`; until then `/guestbook` shows setup instructions instead.
+- **Background sound** (`audio.*`) — drop an `.mp3` into `public/audio/` and set `audio.url`. A small "Sound" toggle appears bottom-right on every page. Off by default, never autoplays, choice remembered.
+- **Footer clock** (`timeZone`) — a live "It is 09:13 where H. Zhu is." line in the footer. Empty string hides it.
+- **Easter egg** (`dedication`) — a hidden line shown to readers who enter the Konami code (↑↑↓↓←→←→BA). Empty string disables it.
+- **Colophon** (`content/pages/colophon.md`) — a quiet "making of" page linked from the footer, covering type, stack and one secret.
+
+Always-on, zero-config: a reading-progress hairline on articles and films, a "Copy link" button on articles, and a back-to-top control.
 
 Styling is one file: **`src/app/globals.css`**. Colours, fonts, spacing and the reading measure are all CSS custom properties at the top under `:root` — change `--accent` and the whole site follows. There is no Tailwind and no CSS-in-JS.
 

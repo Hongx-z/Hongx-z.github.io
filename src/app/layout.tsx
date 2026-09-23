@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 
+import { AudioToggle } from '@/components/AudioToggle';
+import { BackToTop } from '@/components/BackToTop';
+import { EasterEgg } from '@/components/EasterEgg';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
 import { site } from '@/data/site';
@@ -45,6 +48,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="main">{children}</main>
 
         <SiteFooter />
+
+        {/* Global, optional extras. Each one hides itself when unconfigured. */}
+        <BackToTop />
+        <AudioToggle />
+        <EasterEgg />
       </body>
     </html>
   );

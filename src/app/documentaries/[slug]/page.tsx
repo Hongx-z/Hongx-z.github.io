@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 
 import { FilmPoster } from '@/components/FilmPoster';
 import { Prose } from '@/components/Prose';
+import { ReadingProgress } from '@/components/ReadingProgress';
 import { TagRow } from '@/components/TagRow';
 import { VideoPlayer } from '@/components/VideoPlayer';
 import { site } from '@/data/site';
@@ -55,6 +56,8 @@ export default async function DocumentaryPage({ params }: PageProps) {
 
   return (
     <article className="container container--wide">
+      <ReadingProgress />
+
       <header className="film-header">
         <p className="eyebrow">
           <Link href="/documentaries" className="link-underline">

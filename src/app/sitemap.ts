@@ -27,6 +27,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/writing/`, lastModified: latest ? new Date(latest) : undefined, priority: 0.9 },
     { url: `${base}/documentaries/`, priority: 0.9 },
     { url: `${base}/tags/`, priority: 0.5 },
+    { url: `${base}/guestbook/`, priority: 0.5 },
+    { url: `${base}/colophon/`, priority: 0.2 },
 
     ...articles.map((article) => ({
       url: `${base}/writing/${article.slug}/`,

@@ -25,6 +25,47 @@ export interface AboutFrontmatter {
   status?: string[];
 }
 
+export interface SimplePageFrontmatter {
+  title: string;
+  /** Small label above the title, e.g. "Colophon". */
+  eyebrow?: string;
+  /** Optional one-line standfirst under the title. */
+  headline?: string;
+}
+
+/**
+ * A standalone Markdown page from content/pages/ — currently the colophon.
+ * Use this (rather than adding another bespoke loader) for future single
+ * pages like a now page or a contact page.
+ */
+export async function getSimplePage(
+  fileName: string,
+  slug: string,
+): Promise<MarkdownPage<SimplePageFrontmatter>> {
+  const fullPath = path.join(PAGES_DIR, fileName);
+
+  if (!fs.existsSync(fullPath)) {
+    throw new Error(`Missing content/pages/${fileName} — it powers the /${slug} page.`);
+  }
+
+  const raw = fs.readFileSync(fullPath, 'utf8');
+  const { data, content } = matter(raw);
+  const body = content.trim();
+
+  const frontmatter: SimplePageFrontmatter = {
+    title: typeof data.title === 'string' && data.title.trim() ? data.title.trim() : slug,
+    eyebrow: typeof data.eyebrow === 'string' && data.eyebrow.trim() ? data.eyebrow.trim() : undefined,
+    headline: typeof data.headline === 'string' && data.headline.trim() ? data.headline.trim() : undefined,
+  };
+
+  return {
+    slug,
+    frontmatter,
+    body,
+    html: await markdownToHtml(body),
+  };
+}
+
 export async function getAboutPage(): Promise<MarkdownPage<AboutFrontmatter>> {
   const fullPath = path.join(PAGES_DIR, 'about.md');
 

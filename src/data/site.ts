@@ -58,6 +58,7 @@ export const site = {
     { label: 'Writing', href: '/writing' },
     { label: 'Tags', href: '/tags' },
     { label: 'About others', href: '/documentaries' },
+    { label: 'Guestbook', href: '/guestbook' },
   ],
 
   /**
@@ -65,4 +66,59 @@ export const site = {
    * films page to link out to it as well. Leave empty to hide the link.
    */
   filmChannelUrl: '',
+
+  /**
+   * Background music — completely optional.
+   *
+   * Drop an .mp3 into public/audio/ and set `url` to its path (e.g.
+   * '/audio/ambient.mp3'). A small "Sound" toggle then appears in the
+   * bottom-right corner of every page. It never autoplays on its own: the
+   * reader has to switch it on, and their choice is remembered.
+   *
+   * Leave `url` empty and the toggle does not render at all.
+   */
+  audio: {
+    /** Path inside /public, e.g. '/audio/ambient.mp3'. Empty = feature off. */
+    url: '',
+    /** Accessibility label / tooltip. */
+    title: 'Background sound',
+    /** 0–1. Background music should sit well under the reading voice. */
+    volume: 0.4,
+  },
+
+  /**
+   * Guestbook. Runs on GitHub Discussions via giscus — no server, no
+   * database, and every comment is one you can moderate from your repo.
+   *
+   * To switch it on, fill in all four fields. The manual (chapter on the
+   * guestbook) walks through where each value comes from; the short version
+   * is: enable Discussions on the repo, install the giscus app, then read
+   * the values off https://giscus.app after entering your repo name.
+   *
+   * While any field is empty, the guestbook page shows setup instructions
+   * instead of the comment box.
+   */
+  giscus: {
+    /** e.g. 'h-zhu/personal-site' */
+    repo: '',
+    repoId: '',
+    /** Discussion category name, e.g. 'General' */
+    category: 'General',
+    categoryId: '',
+  },
+
+  /**
+   * A hidden line, shown to readers who enter the Konami code on any page
+   * (↑ ↑ ↓ ↓ ← → ← → B A). Use it for whatever should only reach the people
+   * who go looking. Leave empty to disable the easter egg.
+   */
+  dedication: 'For the people who let me point a camera at them.',
+
+  /**
+   * Your IANA time zone, for the live clock in the footer — so readers know
+   * what time it is where you are. Find yours at
+   * https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+   * Leave empty to hide the clock.
+   */
+  timeZone: 'Asia/Shanghai',
 } as const;

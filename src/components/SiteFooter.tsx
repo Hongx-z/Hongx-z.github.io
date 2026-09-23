@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import { LiveClock } from '@/components/LiveClock';
 import { site } from '@/data/site';
 
 export function SiteFooter() {
@@ -8,9 +9,12 @@ export function SiteFooter() {
   return (
     <footer className="footer">
       <div className="container footer__inner">
-        <p>
-          © {year} {site.name}. Written and filmed by hand.
-        </p>
+        <div className="footer__primary">
+          <p>
+            © {year} {site.name}. Written and filmed by hand.
+          </p>
+          <LiveClock />
+        </div>
 
         <div className="footer__links">
           {site.links.map((link) => (
@@ -30,6 +34,13 @@ export function SiteFooter() {
           </Link>
           <Link href="/documentaries" className="link-underline">
             Films
+          </Link>
+          <Link href="/guestbook" className="link-underline">
+            Guestbook
+          </Link>
+          {/* The colophon is deliberately quiet: a footnote, not a feature. */}
+          <Link href="/colophon" className="footer__colophon">
+            Colophon
           </Link>
         </div>
       </div>

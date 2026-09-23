@@ -3,7 +3,9 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { ArticleList } from '@/components/ArticleList';
+import { CopyLinkButton } from '@/components/CopyLinkButton';
 import { Prose } from '@/components/Prose';
+import { ReadingProgress } from '@/components/ReadingProgress';
 import { TagRow } from '@/components/TagRow';
 import { site } from '@/data/site';
 import { getArticle, getArticleSlugs, getRelatedArticles } from '@/lib/articles';
@@ -49,6 +51,8 @@ export default async function ArticlePage({ params }: PageProps) {
 
   return (
     <article className="container container--wide">
+      <ReadingProgress />
+
       <header className="about-head" style={{ paddingBottom: 0 }}>
         <p className="eyebrow">
           <Link href="/writing" className="link-underline">
@@ -66,6 +70,7 @@ export default async function ArticlePage({ params }: PageProps) {
             <span className="dot-sep">·</span>
             {article.readingTime}
           </span>
+          <CopyLinkButton />
         </div>
       </header>
 
