@@ -33,6 +33,39 @@ export interface SimplePageFrontmatter {
   headline?: string;
 }
 
+export interface NowFrontmatter {
+  /** e.g. "September 2026" — shown as the small heading of the Now block. */
+  month: string;
+  /** e.g. "23 September 2026" — shown as "Last updated: …". */
+  updated: string;
+}
+
+/**
+ * The Now block on the home page. Optional by design: if content/pages/now.md
+ * does not exist, the home page simply omits the section.
+ */
+export async function getNowPage(): Promise<MarkdownPage<NowFrontmatter> | null> {
+  const fullPath = path.join(PAGES_DIR, 'now.md');
+
+  if (!fs.existsSync(fullPath)) return null;
+
+  const raw = fs.readFileSync(fullPath, 'utf8');
+  const { data, content } = matter(raw);
+  const body = content.trim();
+
+  const frontmatter: NowFrontmatter = {
+    month: typeof data.month === 'string' ? data.month.trim() : '',
+    updated: typeof data.updated === 'string' ? data.updated.trim() : '',
+  };
+
+  return {
+    slug: 'now',
+    frontmatter,
+    body,
+    html: await markdownToHtml(body),
+  };
+}
+
 /**
  * A standalone Markdown page from content/pages/ — currently the colophon.
  * Use this (rather than adding another bespoke loader) for future single

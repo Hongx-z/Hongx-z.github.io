@@ -1,9 +1,9 @@
 ---
 # ---------------------------------------------------------------------------
 # SAMPLE CONTENT — replace this file with your own.
-# The frontmatter below controls the header of the "About me" page.
+# The frontmatter below controls the header of the "About" page.
 # ---------------------------------------------------------------------------
-title: About me
+title: About
 headline: >-
   I write and I film. Those are not the only two things I do, and this page is
   a record of all of it — not just the part that has a job title.
@@ -38,6 +38,6 @@ Two rules, arrived at slowly and defended stubbornly.
 
 This site is deliberately split in two, because the two halves of the work are not the same thing.
 
-**About me** is the written record: a timeline of what I have done, the honors that came with it, and every article I have published. **About others** is the video record: short films about specific people, each one under half an hour, each one about somebody who is not me.
+**Writing** is the written record: a timeline of what I have done, the honors that came with it, and every article I have published. **Films** is the filmed record: short documentaries about specific people, each one under half an hour, each one about somebody who is not me.
 
-If you want to argue with something I wrote, [email me](mailto:you@example.com). I answer everything, eventually.
+If you want to argue with something I wrote, [email me](mailto:helena_z99@163.com). I answer everything, eventually.

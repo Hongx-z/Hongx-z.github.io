@@ -47,6 +47,19 @@ export function formatDateShort(value: string): string {
   return `${MONTHS[monthIndex] ?? match[2]} ${match[1]}`;
 }
 
+const FULL_MONTHS = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+];
+
+/** "2026-09-23" -> "23 September". Used by the field notes, where the day matters. */
+export function formatDayMonth(value: string): string {
+  const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(value.trim());
+  if (!match) return formatMonth(value);
+  const monthIndex = Number(match[2]) - 1;
+  return `${Number(match[3])} ${FULL_MONTHS[monthIndex] ?? match[2]}`;
+}
+
 /** Turn a human label into a URL-safe tag slug: "Field Notes" -> "field-notes". */
 export function slugify(input: string): string {
   return input

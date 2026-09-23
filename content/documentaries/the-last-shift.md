@@ -11,7 +11,7 @@ summary: >-
 tags:
   - Portrait
   - Night Work
-featured: true
+# featured: true          # only one film should carry this — it becomes the home page feature
 # videoUrl: https://www.youtube.com/watch?v=XXXXXXXXXXX
 credits:
   Director & Camera: Your Name

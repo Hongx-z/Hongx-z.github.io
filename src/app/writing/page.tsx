@@ -18,7 +18,7 @@ export default function WritingPage() {
   return (
     <section className="container container--wide section">
       <header className="about-head" style={{ paddingTop: 0 }}>
-        <p className="eyebrow">About me · The written record</p>
+        <p className="eyebrow">Writing · The written record</p>
         <h1 className="about-head__title">Writing</h1>
         <p className="about-head__headline lede">
           {articles.length} {articles.length === 1 ? 'piece' : 'pieces'} — essays, reportage and

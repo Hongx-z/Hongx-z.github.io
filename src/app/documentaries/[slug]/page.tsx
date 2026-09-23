@@ -61,7 +61,7 @@ export default async function DocumentaryPage({ params }: PageProps) {
       <header className="film-header">
         <p className="eyebrow">
           <Link href="/documentaries" className="link-underline">
-            About others
+            Films
           </Link>
         </p>
 

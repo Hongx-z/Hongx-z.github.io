@@ -11,7 +11,7 @@ import { withBase } from '@/lib/base';
 import { getAboutPage } from '@/lib/pages';
 
 export const metadata: Metadata = {
-  title: 'About me',
+  title: 'About',
   description:
     'A written record of a working life: the timeline, the honors, and the articles that came out of it.',
 };
@@ -26,7 +26,7 @@ export default async function AboutPage() {
   return (
     <>
       <section className="container about-head">
-        <p className="eyebrow">About me</p>
+        <p className="eyebrow">About</p>
         <h1 className="about-head__title">{page.frontmatter.title}</h1>
         {headline ? <p className="about-head__headline lede">{headline}</p> : null}
 

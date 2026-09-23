@@ -1,9 +1,17 @@
 # Personal site
 
-A personal website in two halves:
+A personal site in two halves, plus an account of where I am right now:
 
-- **About me** — a written record. A résumé told as a timeline (what you did, where, what came of it), the honors you were given, and every article you have written.
-- **About others** — a filmed record. Short documentaries about other people, each with its own page and player.
+- **Writing** — a written record. A résumé told as a timeline (what you did, where, what came of it), the honors you were given, and every article you have written.
+- **Films** — a filmed record. Short documentaries about other people, each with its own page and player.
+- **Now & field notes** — a small "what I am doing this month" block and short observations, so the site reads as alive rather than finished.
+
+The home page is ordered deliberately: **explain first, intrigue second, become poetic third** —
+
+```
+Introduction  →  Stories  →  Films  →  Now  →  Field notes
+   who you are     writing     films     what's current   short notes
+```
 
 Built with **Next.js (static export)** so it hosts on **GitHub Pages** for free, with no server and no database. All content is Markdown files in the repository.
 
@@ -17,6 +25,7 @@ Built with **Next.js (static export)** so it hosts on **GitHub Pages** for free,
 - [Where everything lives](#where-everything-lives)
 - [Writing an article](#writing-an-article)
 - [Adding a documentary](#adding-a-documentary)
+- [Adding a field note, and keeping the Now block current](#adding-a-field-note-and-keeping-the-now-block-current)
 - [Editing your résumé (timeline & honors)](#editing-your-résumé-timeline--honors)
 - [Site-wide settings](#site-wide-settings)
 - [Deploying to GitHub Pages](#deploying-to-github-pages)
@@ -61,13 +70,15 @@ Files whose name starts with `_` or `.` are ignored by the build, so templates c
 content/
   articles/          <- one .md file per article; filename = URL slug
   documentaries/     <- one .md file per film; filename = URL slug
+  notes/             <- field notes: one short observation per file
   pages/
-    about.md         <- the prose on the About me page
+    about.md         <- the prose on the About page
+    now.md           <- the home page "Now" block (delete to hide it)
     colophon.md      <- the quiet "making of" page (/colophon)
 
 src/
   app/               <- pages (Next.js App Router)
-    page.tsx             /                 home
+    page.tsx             /                 home: intro, stories, films, now, notes
     about/page.tsx       /about            résumé + timeline + honors
     writing/page.tsx     /writing          article list
     writing/[slug]/      /writing/<slug>   article detail
@@ -80,13 +91,16 @@ src/
     sitemap.ts           /sitemap.xml
     globals.css          all styling
   components/        <- reusable UI pieces (incl. AudioToggle, EasterEgg,
-                        ReadingProgress, CopyLinkButton, BackToTop, LiveClock)
+                        ColophonGlyph, ReadingProgress, CopyLinkButton,
+                        BackToTop, LiveClock)
   data/
-    site.ts          <- name, roles, nav, social links  (start here)
+    site.ts          <- name, roles, intro, nav, social links  (start here)
     resume.ts        <- the timeline and honors arrays
   lib/
     articles.ts      <- reads content/articles
     documentaries.ts <- reads content/documentaries
+    notes.ts         <- reads content/notes
+    pages.ts         <- reads content/pages (about, now, colophon)
     tags.ts          <- the tag index, spanning both collections
     markdown.ts      <- Markdown -> HTML
     format.ts        <- dates, slugs, reading time
@@ -144,7 +158,7 @@ screens.
 | `title` | yes | Build fails without it. |
 | `date` | yes | `YYYY-MM-DD`. Used for sorting (newest first) and display. |
 | `summary` | no | Falls back to the first ~180 characters of the body. |
-| `tags` | no | Plain labels. `Field Notes` and `field-notes` are the same tag. |
+| `tags` | no | Plain labels. `Night Work` and `night-work` are the same tag. |
 | `cover` | no | Path inside `/public`, e.g. `/images/foo.jpg`. |
 | `draft` | no | `true` hides the article from production builds; still visible in `npm run dev`. |
 
@@ -205,6 +219,40 @@ For self-hosted files, drop the file in `public/videos/` and use `videoUrl: /vid
 ### `poster`
 
 If you omit `poster`, the card and the player frame get a procedurally generated two-tone wash derived from the film's slug, so the grid still reads as a contact sheet. Add a real still at `public/images/...` when you have one; 16:9 crops look best.
+
+---
+
+## Adding a field note, and keeping the Now block current
+
+Two small content types exist so that not every thought has to become a finished essay.
+
+**Field notes** live in `content/notes/`, one file per observation, 50–150 words:
+
+```markdown
+---
+date: '2026-09-23'
+---
+
+A cleaner told me that the fastest part of cleaning a room is not the
+cleaning. It's knowing what you don't need to look at.
+```
+
+The home page shows the newest two, with a day-level date. To hide one, prefix the filename with an underscore. Delete the folder and the whole section disappears from the home page.
+
+**The Now block** is `content/pages/now.md` — a few bullets about what you are actually doing this month:
+
+```markdown
+---
+title: Now
+month: September 2026
+updated: 23 September 2026
+---
+
+- Learning Spanish.
+- Making a film about my grandmother's farming life.
+```
+
+Delete the file and the section is skipped; the `Now` nav item then just returns you to the top of the home page. Update the `updated` line whenever you edit it — that date is the whole point of the block.
 
 ---
 

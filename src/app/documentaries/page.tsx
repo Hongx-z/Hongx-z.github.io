@@ -6,9 +6,9 @@ import { site } from '@/data/site';
 import { getAllDocumentaries } from '@/lib/documentaries';
 
 export const metadata: Metadata = {
-  title: 'About others',
+  title: 'Films',
   description:
-    'Short documentaries about other people — the video half of this site. Watch them here, in order, without an algorithm in the way.',
+    'Short documentaries about other people — the filmed half of this site. Watch them here, in order, without an algorithm in the way.',
 };
 
 export default function DocumentariesPage() {
@@ -20,7 +20,7 @@ export default function DocumentariesPage() {
   return (
     <section className="container container--wide section">
       <header className="about-head" style={{ paddingTop: 0 }}>
-        <p className="eyebrow">About others · The filmed record</p>
+        <p className="eyebrow">Films · The filmed record</p>
         <h1 className="about-head__title">Films about other people</h1>
         <p className="about-head__headline lede">
           {films.length} {films.length === 1 ? 'documentary' : 'documentaries'}, each one about a

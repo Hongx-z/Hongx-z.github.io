@@ -30,35 +30,50 @@ export const site = {
 
   /** Used for <meta name="description"> and social previews. */
   description:
-    'A personal site in two halves: a written record of the work I have done, and a filmed record of other people. Every word and every video is a file in the repository.',
+    'I write about people and places. I make films about them. Stories about work, ordinary lives, and places in transition — every word and every video is a file in the repository.',
 
-  /** One or two sentences, shown on the home page. */
-  intro:
-    'The first half is written: what I have done, what I was given for it, and the articles that came out of it. The second half is filmed: short documentaries, one person each. Neither half is meant to be the whole of what I am.',
+  /**
+   * The one concrete sentence under your name. The redesign brief is firm on
+   * this: explain first, intrigue second, become poetic third.
+   */
+  intro: 'I write about people and places. I make films about them.',
+
+  /**
+   * The quiet line that follows the concrete introduction — the part that is
+   * allowed to be a little poetic. Kept separate so the first thing a visitor
+   * reads is never the poetry.
+   */
+  introNote: 'Neither half is meant to be the whole of what I am.',
+
+  /** The one-line promise under the name, above the intro. */
+  positioning: 'Stories about people, work, and places.',
 
   /**
    * Base URL of the deployed site. Used for canonical links and absolute
    * social-preview URLs. Update after your first deploy (see the manual).
    */
-  url: 'https://username.github.io/personal-site',
+  url: 'https://hongx-z.github.io',
 
   /** Shown in the footer and on the about page. */
-  email: 'you@example.com',
-  location: 'Your City',
+  email: 'helena_z99@163.com',
+  location: 'Nanjing',
 
   /** Social links. Delete any you do not use. */
   links: [
-    { label: 'GitHub', href: 'https://github.com/username' },
-    { label: 'Email', href: 'mailto:you@example.com' },
+    { label: 'GitHub', href: 'https://github.com/Hongx-z' },
+    { label: 'Email', href: 'mailto:helena_z99@163.com' },
   ],
 
-  /** Primary navigation. Order matters; labels are yours to change. */
+  /**
+   * Primary navigation. Deliberately short — four items, per the redesign
+   * brief. Guestbook lives in the footer; Tags are reachable from the
+   * writing page.
+   */
   nav: [
-    { label: 'About me', href: '/about' },
     { label: 'Writing', href: '/writing' },
-    { label: 'Tags', href: '/tags' },
-    { label: 'About others', href: '/documentaries' },
-    { label: 'Guestbook', href: '/guestbook' },
+    { label: 'Films', href: '/documentaries' },
+    { label: 'About', href: '/about' },
+    { label: 'Now', href: '/#now' },
   ],
 
   /**

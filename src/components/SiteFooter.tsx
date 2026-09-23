@@ -30,6 +30,9 @@ export function SiteFooter() {
               {link.label}
             </a>
           ))}
+          <Link href="/about" className="link-underline">
+            About
+          </Link>
           <Link href="/writing" className="link-underline">
             Writing
           </Link>

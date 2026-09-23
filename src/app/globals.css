@@ -300,6 +300,13 @@ main {
   max-width: 32rem;
 }
 
+/* The one-line promise under the name: "Stories about people, work, and places." */
+.hero__positioning {
+  margin-top: var(--space-2);
+  max-width: 36rem;
+  color: var(--ink-muted);
+}
+
 .hero__intro {
   margin-top: var(--space-6);
   max-width: var(--measure);
@@ -315,6 +322,129 @@ main {
   flex-wrap: wrap;
   gap: var(--space-5);
   font-size: var(--step--1);
+}
+
+/* The quiet line that comes after the concrete introduction. */
+.hero__note {
+  margin-top: var(--space-7);
+  max-width: var(--measure);
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--ink-faint);
+}
+
+/* ==========================================================================
+   Home — Stories (featured writing)
+   Titles carry the weight; tags and dates stay quiet.
+   ========================================================================== */
+
+.stories {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-7);
+}
+
+.stories__title {
+  font-family: var(--font-serif);
+  font-size: var(--step-3);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.stories__title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.stories__title a:hover,
+.stories__title a:focus-visible {
+  color: var(--accent);
+}
+
+.stories__summary {
+  margin-top: var(--space-2);
+  max-width: 42rem;
+  color: var(--ink-muted);
+  line-height: 1.6;
+}
+
+.stories__meta {
+  margin-top: var(--space-2);
+}
+
+/* ==========================================================================
+   Home — Films shortlist (everything that is not the featured film)
+   ========================================================================== */
+
+.films-shortlist {
+  list-style: none;
+  margin: var(--space-6) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-3);
+}
+
+.films-shortlist__link {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.films-shortlist__link:hover,
+.films-shortlist__link:focus-visible {
+  color: var(--accent);
+}
+
+.films-shortlist__meta {
+  color: var(--ink-faint);
+  font-size: var(--step--1);
+}
+
+/* ==========================================================================
+   Home — Now
+   ========================================================================== */
+
+.now-block__month {
+  color: var(--ink-faint);
+}
+
+.now-block__list {
+  max-width: var(--measure);
+  color: var(--ink-soft);
+  font-family: var(--font-serif);
+}
+
+/* ==========================================================================
+   Home — Field notes
+   ========================================================================== */
+
+.field-notes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-6);
+}
+
+.field-notes__item {
+  border-left: 2px solid var(--rule);
+  padding-left: var(--space-5);
+}
+
+.field-notes__date {
+  color: var(--ink-faint);
+}
+
+.field-notes__body {
+  margin-top: var(--space-2);
+  max-width: 38rem;
+  font-family: var(--font-serif);
+  color: var(--ink-soft);
 }
 
 /* Two-column split used by the home page */
