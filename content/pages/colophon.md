@@ -30,6 +30,8 @@ still has every word.
   from the same place the site itself is kept.
 - **The clock.** The footer keeps the time where I am, which is the closest
   the web gets to knowing when a letter was written.
+- **The glyph.** At the far end of the footer sits a small ❋. It leads back
+  to this page, and — like most small things — it is not always there.
 
 ## One secret
 

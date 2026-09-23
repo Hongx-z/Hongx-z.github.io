@@ -1611,6 +1611,26 @@ main {
   text-underline-offset: 3px;
 }
 
+/* The little glyph that sometimes isn't there. */
+.footer__glyph {
+  color: var(--ink-faint);
+  font-size: 0.85rem;
+  line-height: 1;
+  text-decoration: none;
+  opacity: 0.4;
+  transition: opacity 1.4s ease;
+}
+
+.footer__glyph:hover,
+.footer__glyph:focus-visible {
+  opacity: 1;
+  color: var(--accent);
+}
+
+.footer__glyph--hidden {
+  opacity: 0.04;
+}
+
 /* Reading progress ----------------------------------------------------------- */
 
 .reading-progress {

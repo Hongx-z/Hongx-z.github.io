@@ -100,11 +100,10 @@ export const site = {
    */
   giscus: {
     /** e.g. 'h-zhu/personal-site' */
-    repo: '',
-    repoId: '',
-    /** Discussion category name, e.g. 'General' */
-    category: 'General',
-    categoryId: '',
+    repo: "Hongx-z/Hongx-z.github.io",
+    repoId: "R_kgDOxxxxxx",
+    category: "General",
+    categoryId: "DIC_kwDOxxxxxx",
   },
 
   /**

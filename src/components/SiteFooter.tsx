@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import { ColophonGlyph } from '@/components/ColophonGlyph';
 import { LiveClock } from '@/components/LiveClock';
 import { site } from '@/data/site';
 
@@ -42,6 +43,7 @@ export function SiteFooter() {
           <Link href="/colophon" className="footer__colophon">
             Colophon
           </Link>
+          <ColophonGlyph />
         </div>
       </div>
     </footer>

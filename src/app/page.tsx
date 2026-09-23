@@ -5,13 +5,10 @@ import { FilmPoster } from '@/components/FilmPoster';
 import { site } from '@/data/site';
 import { getAllArticles } from '@/lib/articles';
 import { getAllDocumentaries } from '@/lib/documentaries';
-import { formatDateShort } from '@/lib/format';
-
 export default function HomePage() {
   const articles = getAllArticles().slice(0, 5);
   const films = getAllDocumentaries();
   const featuredFilm = films[0];
-  const otherFilms = films.slice(1, 5);
 
   return (
     <>
@@ -98,25 +95,6 @@ export default function HomePage() {
                 No films yet. Add a Markdown file to <code>content/documentaries/</code>.
               </div>
             )}
-
-            {otherFilms.length > 0 ? (
-              <ol className="post-list post-list--compact" style={{ marginTop: 'var(--space-6)' }}>
-                {otherFilms.map((film) => (
-                  <li key={film.slug} className="post-item">
-                    <h3 className="post-item__title">
-                      <Link href={`/documentaries/${film.slug}`}>{film.title}</Link>
-                    </h3>
-                    <div className="post-item__foot">
-                      <span className="meta">
-                        {[film.subject, film.runtime, film.date ? formatDateShort(film.date) : '']
-                          .filter(Boolean)
-                          .join(' · ')}
-                      </span>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-            ) : null}
           </div>
         </div>
       </section>

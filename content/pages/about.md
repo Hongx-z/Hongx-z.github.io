@@ -7,8 +7,8 @@ title: About me
 headline: >-
   I write and I film. Those are not the only two things I do, and this page is
   a record of all of it — not just the part that has a job title.
-location: Your City
-email: you@example.com
+location: Nanjing
+email: helena_z99@163.com
 # portrait: /images/portrait.jpg      # optional; put the file in public/images/
 status:
   - Available for commissions
