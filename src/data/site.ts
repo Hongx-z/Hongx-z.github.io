@@ -73,7 +73,7 @@ export const site = {
     { label: 'Writing', href: '/writing' },
     { label: 'Films', href: '/documentaries' },
     { label: 'About', href: '/about' },
-    { label: 'Now', href: '/#now' },
+    { label: 'Now', href: '/now' },
   ],
 
   /**

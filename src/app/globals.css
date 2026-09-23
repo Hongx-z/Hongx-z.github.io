@@ -147,6 +147,15 @@ a {
   max-width: calc(var(--measure) + var(--space-5) * 2);
 }
 
+/* The whole visible page, in one box — so the blank-page easter egg can fade
+   it out in a single breath. See .veil below. */
+.page {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  transition: opacity 480ms ease;
+}
+
 main {
   flex: 1 0 auto;
 }
@@ -417,6 +426,11 @@ main {
   max-width: var(--measure);
   color: var(--ink-soft);
   font-family: var(--font-serif);
+}
+
+/* The /now page: the same block at full length, above the field notes. */
+.now-page .now-block__month {
+  margin-bottom: var(--space-5);
 }
 
 /* ==========================================================================
@@ -1743,10 +1757,14 @@ main {
 
 /* The little glyph that sometimes isn't there. */
 .footer__glyph {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
   color: var(--ink-faint);
   font-size: 0.85rem;
   line-height: 1;
-  text-decoration: none;
   opacity: 0.4;
   transition: opacity 1.4s ease;
 }
@@ -1942,6 +1960,71 @@ main {
   }
 }
 
+/* Blank page: the ❋ at the foot of the page empties it ---------------------------- */
+
+/* The page is still here, just out of sight. Hiding it with visibility (rather
+   than removing it) keeps the scroll position and the layout intact, and takes
+   every link and button out of the keyboard's reach while it is blank. */
+html.is-veiled {
+  overflow: hidden;
+}
+
+html.is-veiled .page {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 480ms ease, visibility 0s linear 480ms;
+}
+
+/* The sheet of paper that stands in for the page. */
+.veil {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--space-5);
+  background: var(--paper);
+  color: var(--ink-faint);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 480ms ease, visibility 0s linear 480ms;
+  z-index: 70;
+  outline: none;
+}
+
+.veil--open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 700ms ease;
+}
+
+.veil__mark {
+  font-size: 0.9rem;
+  line-height: 1;
+  opacity: 0.35;
+  transform: scale(0.86);
+  transition: opacity 1.2s ease 120ms, transform 1.2s ease 120ms;
+}
+
+.veil--open .veil__mark {
+  opacity: 0.75;
+  transform: none;
+}
+
+.veil__hint {
+  font-size: var(--step--1);
+  letter-spacing: 0.01em;
+  opacity: 0;
+  transition: opacity 600ms ease 500ms;
+}
+
+.veil--open .veil__hint {
+  opacity: 1;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .back-to-top,
   .back-to-top--visible {
@@ -1956,5 +2039,17 @@ main {
   .dedication,
   .dedication--closing {
     animation: none;
+  }
+
+  /* The page still empties — it just does it without the fade. */
+  .page,
+  html.is-veiled .page,
+  .veil,
+  .veil--open,
+  .veil__mark,
+  .veil--open .veil__mark,
+  .veil__hint,
+  .veil--open .veil__hint {
+    transition: none;
   }
 }

@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { AudioToggle } from '@/components/AudioToggle';
 import { BackToTop } from '@/components/BackToTop';
 import { EasterEgg } from '@/components/EasterEgg';
+import { PageVeil } from '@/components/PageVeil';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
 import { site } from '@/data/site';
@@ -39,20 +40,27 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <a className="skip-link" href="#main">
-          Skip to content
-        </a>
+        {/* Everything visible lives in .page so the blank-page easter egg can
+            fade it all out at once — see PageVeil. */}
+        <div className="page">
+          <a className="skip-link" href="#main">
+            Skip to content
+          </a>
 
-        <SiteHeader />
+          <SiteHeader />
 
-        <main id="main">{children}</main>
+          <main id="main">{children}</main>
 
-        <SiteFooter />
+          <SiteFooter />
 
-        {/* Global, optional extras. Each one hides itself when unconfigured. */}
-        <BackToTop />
-        <AudioToggle />
-        <EasterEgg />
+          {/* Global, optional extras. Each one hides itself when unconfigured. */}
+          <BackToTop />
+          <AudioToggle />
+          <EasterEgg />
+        </div>
+
+        {/* Not part of the page: the sheet of paper that replaces it. */}
+        <PageVeil />
       </body>
     </html>
   );

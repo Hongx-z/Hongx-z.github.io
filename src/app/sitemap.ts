@@ -26,6 +26,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/about/`, priority: 0.9 },
     { url: `${base}/writing/`, lastModified: latest ? new Date(latest) : undefined, priority: 0.9 },
     { url: `${base}/documentaries/`, priority: 0.9 },
+    { url: `${base}/now/`, priority: 0.7 },
     { url: `${base}/tags/`, priority: 0.5 },
     { url: `${base}/guestbook/`, priority: 0.5 },
     { url: `${base}/colophon/`, priority: 0.2 },

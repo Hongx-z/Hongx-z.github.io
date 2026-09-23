@@ -30,8 +30,12 @@ still has every word.
   from the same place the site itself is kept.
 - **The clock.** The footer keeps the time where I am, which is the closest
   the web gets to knowing when a letter was written.
-- **The glyph.** At the far end of the footer sits a small ❋. It leads back
-  to this page, and — like most small things — it is not always there.
+- **The glyph.** At the far end of the footer sits a small ❋, and it is not
+  always there: every so often it goes quiet for a second and then comes
+  back. If you click it, the same thing happens to the page — every word
+  fades, and what is left is a blank sheet of paper. Click anywhere and it
+  all returns, exactly as it was. Nothing is saved and nothing is lost; a
+  page that can be emptied and refilled is a page you can trust.
 
 ## One secret
 

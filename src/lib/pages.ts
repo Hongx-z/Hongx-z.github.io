@@ -34,6 +34,8 @@ export interface SimplePageFrontmatter {
 }
 
 export interface NowFrontmatter {
+  /** Page title — 'Now' unless you rename it. */
+  title: string;
   /** e.g. "September 2026" — shown as the small heading of the Now block. */
   month: string;
   /** e.g. "23 September 2026" — shown as "Last updated: …". */
@@ -41,8 +43,9 @@ export interface NowFrontmatter {
 }
 
 /**
- * The Now block on the home page. Optional by design: if content/pages/now.md
- * does not exist, the home page simply omits the section.
+ * The Now page: the block that appears on the home page and, in full, at /now
+ * alongside the field notes. Optional by design: if content/pages/now.md does
+ * not exist, the home page simply omits the section.
  */
 export async function getNowPage(): Promise<MarkdownPage<NowFrontmatter> | null> {
   const fullPath = path.join(PAGES_DIR, 'now.md');
@@ -54,6 +57,7 @@ export async function getNowPage(): Promise<MarkdownPage<NowFrontmatter> | null>
   const body = content.trim();
 
   const frontmatter: NowFrontmatter = {
+    title: typeof data.title === 'string' && data.title.trim() ? data.title.trim() : 'Now',
     month: typeof data.month === 'string' ? data.month.trim() : '',
     updated: typeof data.updated === 'string' ? data.updated.trim() : '',
   };

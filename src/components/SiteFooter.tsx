@@ -39,6 +39,9 @@ export function SiteFooter() {
           <Link href="/documentaries" className="link-underline">
             Films
           </Link>
+          <Link href="/now" className="link-underline">
+            Now
+          </Link>
           <Link href="/guestbook" className="link-underline">
             Guestbook
           </Link>

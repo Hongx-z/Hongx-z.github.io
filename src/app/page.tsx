@@ -146,13 +146,22 @@ export default async function HomePage() {
 
           <section className="container section now-block" id="now">
             <div className="block-head">
-              <h2 className="block-head__title">Now</h2>
-              {now.frontmatter.updated ? (
-                <span className="meta">Last updated: {now.frontmatter.updated}</span>
-              ) : null}
+              <h2 className="block-head__title">{now.frontmatter.title}</h2>
+              <Link href="/now" className="block-head__more link-underline">
+                The full Now page →
+              </Link>
             </div>
 
-            {now.frontmatter.month ? <p className="now-block__month meta">{now.frontmatter.month}</p> : null}
+            {now.frontmatter.month || now.frontmatter.updated ? (
+              <p className="now-block__month meta">
+                {[
+                  now.frontmatter.month,
+                  now.frontmatter.updated ? `Last updated: ${now.frontmatter.updated}` : '',
+                ]
+                  .filter(Boolean)
+                  .join(' · ')}
+              </p>
+            ) : null}
 
             <div className="now-block__list prose" dangerouslySetInnerHTML={{ __html: now.html }} />
           </section>
@@ -167,6 +176,9 @@ export default async function HomePage() {
           <section className="container section">
             <div className="block-head">
               <h2 className="block-head__title">Field notes</h2>
+              <Link href="/now" className="block-head__more link-underline">
+                All field notes →
+              </Link>
             </div>
 
             <p className="muted" style={{ marginBottom: 'var(--space-6)', maxWidth: '40rem' }}>

@@ -73,13 +73,14 @@ content/
   notes/             <- field notes: one short observation per file
   pages/
     about.md         <- the prose on the About page
-    now.md           <- the home page "Now" block (delete to hide it)
+    now.md           <- "Now" prose, shared by the home block and /now
     colophon.md      <- the quiet "making of" page (/colophon)
 
 src/
   app/               <- pages (Next.js App Router)
     page.tsx             /                 home: intro, stories, films, now, notes
     about/page.tsx       /about            résumé + timeline + honors
+    now/page.tsx         /now              the Now block in full + all field notes
     writing/page.tsx     /writing          article list
     writing/[slug]/      /writing/<slug>   article detail
     tags/page.tsx        /tags             all tags
@@ -91,8 +92,8 @@ src/
     sitemap.ts           /sitemap.xml
     globals.css          all styling
   components/        <- reusable UI pieces (incl. AudioToggle, EasterEgg,
-                        ColophonGlyph, ReadingProgress, CopyLinkButton,
-                        BackToTop, LiveClock)
+                        ColophonGlyph, PageVeil, ReadingProgress,
+                        CopyLinkButton, BackToTop, LiveClock)
   data/
     site.ts          <- name, roles, intro, nav, social links  (start here)
     resume.ts        <- the timeline and honors arrays
@@ -237,9 +238,9 @@ A cleaner told me that the fastest part of cleaning a room is not the
 cleaning. It's knowing what you don't need to look at.
 ```
 
-The home page shows the newest two, with a day-level date. To hide one, prefix the filename with an underscore. Delete the folder and the whole section disappears from the home page.
+The home page shows the newest two, with a day-level date; `/now` shows all of them. To hide one, prefix the filename with an underscore. Delete the folder and the section disappears from both pages.
 
-**The Now block** is `content/pages/now.md` — a few bullets about what you are actually doing this month:
+**The Now block** is `content/pages/now.md` — a few bullets about what you are actually doing this month. It appears twice: as the short block on the home page, and as the top half of `/now` (which then continues into the full list of field notes). Edit the file once and both follow.
 
 ```markdown
 ---
@@ -252,7 +253,7 @@ updated: 23 September 2026
 - Making a film about my grandmother's farming life.
 ```
 
-Delete the file and the section is skipped; the `Now` nav item then just returns you to the top of the home page. Update the `updated` line whenever you edit it — that date is the whole point of the block.
+Delete the file and the block is skipped on the home page and omitted from `/now`; the page itself survives, showing only the field notes. Update the `updated` line whenever you edit it — that date is the whole point of the block.
 
 ---
 
@@ -320,7 +321,9 @@ Each of these hides itself completely until you configure it in `src/data/site.t
 - **Easter egg** (`dedication`) — a hidden line shown to readers who enter the Konami code (↑↑↓↓←→←→BA). Empty string disables it.
 - **Colophon** (`content/pages/colophon.md`) — a quiet "making of" page linked from the footer, covering type, stack and one secret.
 
-Always-on, zero-config: a reading-progress hairline on articles and films, a "Copy link" button on articles, and a back-to-top control.
+Always-on, zero-config: a reading-progress hairline on articles and films, a "Copy link" button on articles, a back-to-top control, and the blank-page glyph.
+
+The **glyph** (the small ❋ at the end of the footer) is the other quiet joke. Untouched, it fades out and returns at random. Clicked, it does the same thing to the page itself: everything fades and you are left with an empty sheet; click anywhere — or press Escape — and the page comes back exactly as it was, keeping its scroll position and focus. Nothing is stored. It lives in `src/components/ColophonGlyph.tsx` (the trigger) and `src/components/PageVeil.tsx` (the blank sheet); removing the single `<ColophonGlyph />` line from `SiteFooter.tsx` turns it off.
 
 Styling is one file: **`src/app/globals.css`**. Colours, fonts, spacing and the reading measure are all CSS custom properties at the top under `:root` — change `--accent` and the whole site follows. There is no Tailwind and no CSS-in-JS.
 
