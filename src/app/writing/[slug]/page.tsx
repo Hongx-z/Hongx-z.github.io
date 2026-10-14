@@ -10,7 +10,7 @@ import { TagRow } from '@/components/TagRow';
 import { site } from '@/data/site';
 import { getArticle, getArticleSlugs, getRelatedArticles } from '@/lib/articles';
 import { withBase } from '@/lib/base';
-import { formatDate } from '@/lib/format';
+import { decodeRouteParam, formatDate } from '@/lib/format';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -21,7 +21,7 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = await params;
+  const slug = decodeRouteParam((await params).slug);
   const article = await getArticle(slug);
 
   return {
@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function ArticlePage({ params }: PageProps) {
-  const { slug } = await params;
+  const slug = decodeRouteParam((await params).slug);
 
   if (!getArticleSlugs().includes(slug)) {
     notFound();
@@ -100,7 +100,7 @@ export default async function ArticlePage({ params }: PageProps) {
         )}
 
         <div className="article-grid__body">
-          <Prose html={article.html} variant="article" />
+          <Prose html={article.html} variant="article" lang={article.lang} />
 
           <footer className="article-foot">
             <p className="meta">

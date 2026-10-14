@@ -1,31 +1,50 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type KeyboardEvent } from 'react';
 
 import { site } from '@/data/site';
-import { formatDayMonth } from '@/lib/format';
+import { detectLang, formatDayMonth } from '@/lib/format';
+import { compareNotes } from '@/lib/note-order';
 
 const TOKEN_KEY = 'site:note-token';
 const API = 'https://api.github.com';
+
+/** How many notes a reader sees before the list has to be opened up. */
+const VISIBLE_LIMIT = 5;
 
 /** A field note as it reaches the browser from the built page. */
 export interface FieldNote {
   slug: string;
   date: string;
-  body: string;
+  pinned: boolean;
+  /** Rendered HTML, for notes that came from the built page. */
   html: string;
+  /** 'zh' when the note is written in Chinese. */
+  lang?: string;
 }
 
 /** A row in the list: either the built version, or one changed this session. */
 interface Row {
   slug: string;
   date: string;
+  pinned: boolean;
   /** Rendered HTML, for notes that came from the built page. */
   html?: string;
   /** Raw text, for notes just written or edited here. */
   text?: string;
+  /** 'zh' when the note is written in Chinese. */
+  lang?: string;
   /** A quiet line under a note that is waiting for the next build. */
   pendingNote?: string;
+}
+
+/** The note currently open for editing. */
+interface Editing {
+  slug: string;
+  /** The blob sha the edit is based on; GitHub needs it to accept the write. */
+  sha: string;
+  date: string;
+  pinned: boolean;
 }
 
 interface Message {
@@ -51,18 +70,27 @@ function todayIso(): string {
   }
 }
 
-function noteFile(date: string, body: string): string {
-  return `---\ndate: '${date}'\n---\n\n${body.trim()}\n`;
+function noteFile(date: string, body: string, pinned = false): string {
+  const flags = [`date: '${date}'`, ...(pinned ? ['pinned: true'] : [])];
+  return `---\n${flags.join('\n')}\n---\n\n${body.trim()}\n`;
 }
 
-function splitFrontmatter(text: string): { date: string; body: string } {
+function splitFrontmatter(text: string): { date: string; pinned: boolean; body: string } {
   const match = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?/.exec(text);
-  if (!match) return { date: '', body: text.trim() };
+  if (!match) return { date: '', pinned: false, body: text.trim() };
 
   const date = /^date:\s*['"]?([^'"\n]+)['"]?\s*$/m.exec(match[1])?.[1]?.trim() ?? '';
-  return { date, body: text.slice(match[0].length).trim() };
+  const pinned = /^pinned:\s*true\s*$/m.test(match[1]);
+  return { date, pinned, body: text.slice(match[0].length).trim() };
 }
 
+/**
+ * Base64 of a UTF-8 string.
+ *
+ * `window.btoa` only accepts Latin-1, so 中文 would throw on it — the text is
+ * encoded to bytes first and each byte sent through separately. This is what
+ * lets a note be written in Chinese, or in any other script.
+ */
 function toBase64(text: string): string {
   const bytes = new TextEncoder().encode(text);
   let binary = '';
@@ -70,6 +98,7 @@ function toBase64(text: string): string {
   return window.btoa(binary);
 }
 
+/** The reverse: bytes out of base64, then decoded as UTF-8. */
 function fromBase64(text: string): string {
   const binary = window.atob(text.replace(/\s/g, ''));
   return new TextDecoder().decode(Uint8Array.from(binary, (char) => char.charCodeAt(0)));
@@ -92,6 +121,12 @@ function explain(status: number, repo: string): string {
   }
 }
 
+/** The blob sha a write produced, if GitHub sent one back. */
+function readBlobSha(result: Record<string, unknown> | null): string | undefined {
+  const content = result?.content as { sha?: unknown } | undefined;
+  return typeof content?.sha === 'string' ? content.sha : undefined;
+}
+
 async function gh(path: string, token: string, init: RequestInit = {}) {
   const response = await fetch(`${API}${path}`, {
     ...init,
@@ -112,14 +147,14 @@ async function gh(path: string, token: string, init: RequestInit = {}) {
 async function readNote(
   slug: string,
   token: string,
-): Promise<{ sha: string; date: string; body: string }> {
+): Promise<{ sha: string; date: string; pinned: boolean; body: string }> {
   const data = await gh(
     `/repos/${site.editor.repo}/contents/${pathFor(slug)}?ref=${encodeURIComponent(site.editor.branch)}`,
     token,
   );
   const text = typeof data?.content === 'string' ? fromBase64(data.content) : '';
-  const { date, body } = splitFrontmatter(text);
-  return { sha: String(data?.sha ?? ''), date, body };
+  const { date, pinned, body } = splitFrontmatter(text);
+  return { sha: String(data?.sha ?? ''), date, pinned, body };
 }
 
 /**
@@ -131,21 +166,23 @@ async function readNote(
  * alone, that commits to content/notes/. The site rebuilds itself from the
  * commit a minute later.
  *
- * · Readers see the notes, and a box that asks for a token they do not have.
+ * · Readers see the five most recent notes, and no controls at all.
+ * · Unlocked, a note is something you click: it opens where it stands, with
+ *   save, cancel, pin and delete on the panel underneath.
+ * · New notes are written in the box at the end of the list, filed under
+ *   today, and can be written in any language.
  * · Unlock once and this browser remembers; "Forget this token" puts it back.
- * · Dates come from the clock, so a note is never filed under the wrong day.
  */
 export function FieldNoteComposer({ notes }: { notes: FieldNote[] }) {
   const { repo, branch } = site.editor;
 
-  const [rows, setRows] = useState<Row[]>(() =>
-    notes.map((note) => ({ slug: note.slug, date: note.date, html: note.html })),
-  );
+  const [rows, setRows] = useState<Row[]>(() => [...notes].sort(compareNotes));
   const [token, setToken] = useState('');
   const [tokenInput, setTokenInput] = useState('');
   const [panelOpen, setPanelOpen] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const [newDraft, setNewDraft] = useState('');
-  const [editing, setEditing] = useState<{ slug: string; sha: string; date: string } | null>(null);
+  const [editing, setEditing] = useState<Editing | null>(null);
   const [editDraft, setEditDraft] = useState('');
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<Message | null>(null);
@@ -166,6 +203,13 @@ export function FieldNoteComposer({ notes }: { notes: FieldNote[] }) {
   if (!repo) return null;
 
   const unlocked = Boolean(token);
+  const pinnedCount = rows.filter((row) => row.pinned).length;
+  const collapsible = rows.length > VISIBLE_LIMIT;
+  const shown = expanded || !collapsible ? rows : rows.slice(0, VISIBLE_LIMIT);
+  const hidden = rows.length - shown.length;
+
+  /** Every change to the list goes through here, so the order always holds. */
+  const sorted = (next: Row[]) => [...next].sort(compareNotes);
 
   const unlock = async () => {
     const value = tokenInput.trim();
@@ -192,7 +236,10 @@ export function FieldNoteComposer({ notes }: { notes: FieldNote[] }) {
       } catch {
         /* not fatal: the token just will not be remembered */
       }
-      setMessage({ tone: 'ok', text: 'Unlocked. Notes you save here go into the repository.' });
+      setMessage({
+        tone: 'ok',
+        text: 'Unlocked. Click any note to edit it; new ones go in the box below.',
+      });
     } catch (error) {
       setMessage({ tone: 'error', text: (error as Error).message });
     } finally {
@@ -243,15 +290,19 @@ export function FieldNoteComposer({ notes }: { notes: FieldNote[] }) {
         }),
       });
 
-      setRows((previous) => [
-        {
-          slug,
-          date,
-          text: body,
-          pendingNote: 'Committed — it appears here, rendered, after the next build.',
-        },
-        ...previous,
-      ]);
+      setRows((previous) =>
+        sorted([
+          {
+            slug,
+            date,
+            pinned: false,
+            text: body,
+            lang: detectLang(body),
+            pendingNote: 'Committed — it appears here, rendered, after the next build.',
+          },
+          ...previous,
+        ]),
+      );
       setNewDraft('');
       setMessage({
         tone: 'ok',
@@ -264,22 +315,32 @@ export function FieldNoteComposer({ notes }: { notes: FieldNote[] }) {
     }
   };
 
-  const startEdit = async (row: Row) => {
-    if (busy) return;
+  /** Clicking a note opens it in place. The text comes from the repository. */
+  const beginEdit = async (row: Row) => {
+    if (busy || !unlocked) return;
 
     setBusy(true);
     setMessage(null);
 
     try {
       const note = await readNote(row.slug, token);
-      setEditing({ slug: row.slug, sha: note.sha, date: note.date || row.date });
+      setEditing({
+        slug: row.slug,
+        sha: note.sha,
+        date: note.date || row.date,
+        pinned: note.pinned,
+      });
       setEditDraft(note.body);
-      setMessage({ tone: 'info', text: 'Loaded the latest version from the repository.' });
     } catch (error) {
       setMessage({ tone: 'error', text: (error as Error).message });
     } finally {
       setBusy(false);
     }
+  };
+
+  const closeEditor = () => {
+    setEditing(null);
+    setEditDraft('');
   };
 
   const saveEdit = async () => {
@@ -295,27 +356,28 @@ export function FieldNoteComposer({ notes }: { notes: FieldNote[] }) {
         body: JSON.stringify({
           message: `Edit field note: ${editing.slug}`,
           // The date is kept as it was — editing a note does not move it to today.
-          content: toBase64(noteFile(editing.date || today || todayIso(), body)),
+          content: toBase64(noteFile(editing.date || today || todayIso(), body, editing.pinned)),
           sha: editing.sha,
           branch,
         }),
       });
 
-      const slug = editing.slug;
+      const { slug, pinned } = editing;
       setRows((previous) =>
         previous.map((row) =>
           row.slug === slug
             ? {
                 ...row,
+                pinned,
                 text: body,
                 html: undefined,
+                lang: detectLang(body),
                 pendingNote: 'Edited — the rendered version returns with the next build.',
               }
             : row,
         ),
       );
-      setEditing(null);
-      setEditDraft('');
+      closeEditor();
       setMessage({ tone: 'ok', text: 'Saved. GitHub Pages rebuilds in about a minute.' });
     } catch (error) {
       setMessage({ tone: 'error', text: (error as Error).message });
@@ -324,10 +386,84 @@ export function FieldNoteComposer({ notes }: { notes: FieldNote[] }) {
     }
   };
 
-  const remove = async (row: Row) => {
+  /**
+   * Pin or unpin: the same file rewrite, with one extra line of frontmatter.
+   *
+   * If the note is open and has unsaved text, that text goes in too — pinning
+   * should never quietly throw away what you have just typed.
+   */
+  const setPinned = async (
+    target: { slug: string; date: string },
+    next: boolean,
+    draft?: string,
+  ) => {
+    if (busy) return;
+
+    setBusy(true);
+    setMessage(null);
+
+    try {
+      const note = await readNote(target.slug, token);
+      const body = draft?.trim() || note.body;
+
+      const result = await gh(`/repos/${repo}/contents/${pathFor(target.slug)}`, token, {
+        method: 'PUT',
+        body: JSON.stringify({
+          message: `${next ? 'Pin' : 'Unpin'} field note: ${target.slug}`,
+          content: toBase64(noteFile(note.date || target.date, body, next)),
+          sha: note.sha,
+          branch,
+        }),
+      });
+
+      setRows((previous) =>
+        sorted(
+          previous.map((item) =>
+            item.slug === target.slug
+              ? {
+                  ...item,
+                  pinned: next,
+                  ...(draft === undefined
+                    ? {}
+                    : {
+                        text: body,
+                        html: undefined,
+                        lang: detectLang(body),
+                        pendingNote: 'Edited — the rendered version returns with the next build.',
+                      }),
+                }
+              : item,
+          ),
+        ),
+      );
+      // The write made a new blob, so an open editor's sha is stale now;
+      // saving from it again would come back as a 409 without this.
+      setEditing((current) =>
+        current && current.slug === target.slug
+          ? { ...current, pinned: next, sha: readBlobSha(result) ?? current.sha }
+          : current,
+      );
+      setMessage({
+        tone: 'ok',
+        text: next
+          ? 'Pinned to the top. It stays there until you unpin it.'
+          : 'Unpinned — it falls back into date order.',
+      });
+    } catch (error) {
+      setMessage({ tone: 'error', text: (error as Error).message });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const remove = async (row: { slug: string; date: string }) => {
     if (busy) return;
     const label = formatDayMonth(row.date);
-    if (!window.confirm(`Delete the note from ${label}? It is removed from the repository with a commit.`)) {
+    if (
+      !window.confirm(
+        `Delete the note from ${label}? It is removed from the repository with a commit.`,
+      )
+    ) {
       return;
     }
 
@@ -342,10 +478,7 @@ export function FieldNoteComposer({ notes }: { notes: FieldNote[] }) {
       });
 
       setRows((previous) => previous.filter((item) => item.slug !== row.slug));
-      if (editing?.slug === row.slug) {
-        setEditing(null);
-        setEditDraft('');
-      }
+      if (editing?.slug === row.slug) closeEditor();
       setMessage({ tone: 'ok', text: 'Deleted. GitHub Pages rebuilds in about a minute.' });
     } catch (error) {
       setMessage({ tone: 'error', text: (error as Error).message });
@@ -354,92 +487,179 @@ export function FieldNoteComposer({ notes }: { notes: FieldNote[] }) {
     }
   };
 
+  const onBodyKey = (event: KeyboardEvent<HTMLDivElement>, row: Row) => {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    event.preventDefault();
+    void beginEdit(row);
+  };
+
   return (
     <>
       {rows.length > 0 ? (
-        <ol className="field-notes">
-          {rows.map((row) => (
-            <li
-              key={row.slug}
-              className={`field-notes__item${row.pendingNote ? ' field-notes__item--fresh' : ''}`}
-            >
-              <div className="field-notes__head">
-                <p className="field-notes__date meta">{formatDayMonth(row.date)}</p>
+        <p className="field-notes__count meta">
+          {rows.length} {rows.length === 1 ? 'note' : 'notes'}
+          <span className="dot-sep">·</span>
+          {pinnedCount > 0 ? `${pinnedCount} pinned` : 'Newest first'}
+        </p>
+      ) : null}
 
-                {unlocked ? (
-                  <p className="field-notes__actions">
-                    <button
-                      type="button"
-                      className="note-link"
-                      disabled={busy}
-                      onClick={() => void startEdit(row)}
-                    >
-                      Edit
-                    </button>
-                    <span className="dot-sep">·</span>
-                    <button
-                      type="button"
-                      className="note-link note-link--danger"
-                      disabled={busy}
-                      onClick={() => void remove(row)}
-                    >
-                      Delete
-                    </button>
+      {rows.length > 0 ? (
+        <ol className={`field-notes${expanded && collapsible ? ' field-notes--expanded' : ''}`}>
+          {shown.map((row) => {
+            // Narrowed here so the open panel can read the note's own state.
+            const current = editing && editing.slug === row.slug ? editing : null;
+
+            return (
+              <li
+                key={row.slug}
+                className={`field-notes__item${row.pendingNote ? ' field-notes__item--fresh' : ''}${
+                  row.pinned ? ' field-notes__item--pinned' : ''
+                }`}
+              >
+                <div className="field-notes__head">
+                  <p className="field-notes__date meta">
+                    {formatDayMonth(row.date)}
+                    {row.pinned ? (
+                      <>
+                        <span className="dot-sep">·</span>
+                        <span className="field-notes__pin">Pinned</span>
+                      </>
+                    ) : null}
+                    {unlocked && !current ? (
+                      <>
+                        <span className="dot-sep">·</span>
+                        <span className="field-notes__hint">Click to edit</span>
+                      </>
+                    ) : null}
                   </p>
-                ) : null}
-              </div>
-
-              {editing?.slug === row.slug ? (
-                <div className="note-panel note-panel--inline">
-                  <label className="visually-hidden" htmlFor="note-edit">
-                    Edit this field note
-                  </label>
-                  <textarea
-                    id="note-edit"
-                    className="note-panel__input"
-                    rows={4}
-                    value={editDraft}
-                    disabled={busy}
-                    onChange={(event) => setEditDraft(event.target.value)}
-                  />
-                  <div className="note-panel__row">
-                    <button
-                      type="button"
-                      className="btn btn--primary"
-                      disabled={busy || !editDraft.trim()}
-                      onClick={() => void saveEdit()}
-                    >
-                      {busy ? 'Saving…' : 'Save changes'}
-                    </button>
-                    <button
-                      type="button"
-                      className="btn"
-                      disabled={busy}
-                      onClick={() => {
-                        setEditing(null);
-                        setEditDraft('');
-                      }}
-                    >
-                      Cancel
-                    </button>
-                  </div>
                 </div>
-              ) : row.html ? (
-                <div className="field-notes__body prose" dangerouslySetInnerHTML={{ __html: row.html }} />
-              ) : (
-                <div className="field-notes__body prose field-notes__body--raw">{row.text}</div>
-              )}
 
-              {row.pendingNote ? <p className="field-notes__pending meta">{row.pendingNote}</p> : null}
-            </li>
-          ))}
+                {current ? (
+                  /* ------------------------------------------------- open note -- */
+                  <div className="note-panel note-panel--inline">
+                    <p className="note-panel__lede">
+                      <span className="note-panel__date">{formatDayMonth(current.date)}</span>
+                      <span className="meta">
+                        The date stays as it is. Write in English or 中文 — both are fine.
+                      </span>
+                    </p>
+
+                    <label className="visually-hidden" htmlFor={`note-edit-${row.slug}`}>
+                      Edit this field note
+                    </label>
+                    <textarea
+                      id={`note-edit-${row.slug}`}
+                      className="note-panel__input"
+                      rows={5}
+                      value={editDraft}
+                      disabled={busy}
+                      autoFocus
+                      onChange={(event) => setEditDraft(event.target.value)}
+                    />
+
+                    <div className="note-panel__row">
+                      <button
+                        type="button"
+                        className="btn btn--primary"
+                        disabled={busy || !editDraft.trim()}
+                        onClick={() => void saveEdit()}
+                      >
+                        {busy ? 'Saving…' : 'Save changes'}
+                      </button>
+                      <button
+                        type="button"
+                        className="btn"
+                        disabled={busy}
+                        onClick={() => void setPinned(current, !current.pinned, editDraft)}
+                      >
+                        {current.pinned ? 'Unpin' : 'Pin to top'}
+                      </button>
+                      <button
+                        type="button"
+                        className="btn"
+                        disabled={busy}
+                        onClick={closeEditor}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn--danger"
+                        disabled={busy}
+                        onClick={() => void remove(row)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  /* ------------------------------------------------- shut note -- */
+                  <div
+                    className={`field-notes__target${unlocked ? ' field-notes__target--live' : ''}`}
+                    {...(unlocked
+                      ? {
+                          role: 'button',
+                          tabIndex: 0,
+                          'aria-label': `Edit the note from ${formatDayMonth(row.date)}`,
+                          onClick: () => void beginEdit(row),
+                          onKeyDown: (event: KeyboardEvent<HTMLDivElement>) =>
+                            onBodyKey(event, row),
+                        }
+                      : {})}
+                  >
+                    {row.html ? (
+                      <div
+                        className="field-notes__body prose"
+                        {...(row.lang ? { lang: row.lang } : {})}
+                        dangerouslySetInnerHTML={{ __html: row.html }}
+                      />
+                    ) : (
+                      <div
+                        className="field-notes__body prose field-notes__body--raw"
+                        {...(row.lang ? { lang: row.lang } : {})}
+                      >
+                        {row.text}
+                      </div>
+                    )}
+
+                    {unlocked ? (
+                      <span className="field-notes__cue" aria-hidden="true">
+                        ✎
+                      </span>
+                    ) : null}
+                  </div>
+                )}
+
+                {row.pendingNote ? <p className="field-notes__pending meta">{row.pendingNote}</p> : null}
+              </li>
+            );
+          })}
         </ol>
       ) : (
         <div className="empty-state">
-          No field notes yet. Add a Markdown file to <code>content/notes/</code> — or write one from the box
-          below.
+          No field notes yet. Add a Markdown file to <code>content/notes/</code> — or write one from
+          the box below.
         </div>
       )}
+
+      {collapsible ? (
+        <p className="field-notes__more">
+          <button
+            type="button"
+            className="note-link note-link--more"
+            aria-expanded={expanded}
+            onClick={() => setExpanded((open) => !open)}
+          >
+            {expanded ? 'Show the five most recent' : `Show all ${rows.length} notes`}
+          </button>
+          {!expanded && hidden > 0 ? (
+            <span className="meta">
+              <span className="dot-sep">·</span>
+              {hidden} older {hidden === 1 ? 'note' : 'notes'}
+            </span>
+          ) : null}
+        </p>
+      ) : null}
 
       {/* --------------------------------------------------------- the desk -- */}
 
@@ -459,7 +679,9 @@ export function FieldNoteComposer({ notes }: { notes: FieldNote[] }) {
               <>
                 <p className="note-panel__lede">
                   <span className="note-panel__date">{today ? formatDayMonth(today) : 'Today'}</span>
-                  <span className="meta">Filed under today. One observation, 50–150 words.</span>
+                  <span className="meta">
+                    Filed under today. English or 中文, one observation at a time.
+                  </span>
                 </p>
 
                 <label className="visually-hidden" htmlFor="note-new">
@@ -474,6 +696,10 @@ export function FieldNoteComposer({ notes }: { notes: FieldNote[] }) {
                   placeholder="A cleaner told me that the fastest part of cleaning a room is not the cleaning…"
                   onChange={(event) => setNewDraft(event.target.value)}
                 />
+                <p className="note-panel__fine">
+                  Saved straight into the repository. To pin it or change a word, click the note
+                  itself — it opens in place.
+                </p>
 
                 <div className="note-panel__row">
                   <button
@@ -528,7 +754,7 @@ export function FieldNoteComposer({ notes }: { notes: FieldNote[] }) {
                 <p className="note-panel__fine">
                   Make it fine-grained, limited to this one repository, with an expiry. While it is unlocked,
                   anyone using this browser profile can write too — so avoid unlocking on a shared machine.
-                  Readers never see this box unlocked, and never see the controls above the notes.
+                  Readers never see this box unlocked, and never see any controls on the notes themselves.
                 </p>
               </>
             )}

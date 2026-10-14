@@ -1,6 +1,11 @@
 import { TagRow } from '@/components/TagRow';
 import { timeline, type TimelineKind } from '@/data/resume';
-import { formatPeriod, slugify } from '@/lib/format';
+import { detectLang, formatPeriod, slugify } from '@/lib/format';
+
+/** A note is marked up in its own language when it is not English. */
+function isCjk(text: string): boolean {
+  return detectLang(text) === 'zh';
+}
 
 const KIND_LABEL: Record<TimelineKind, string> = {
   work: 'Work',
@@ -37,6 +42,14 @@ export function Timeline() {
           )}
 
           <p className="timeline__summary">{entry.summary}</p>
+
+          {/* The quieter second line — usually Chinese. Same facts, other
+              language; the type is set for both. */}
+          {entry.note ? (
+            <p className="timeline__note" {...(isCjk(entry.note) ? { lang: 'zh' } : {})}>
+              {entry.note}
+            </p>
+          ) : null}
 
           {entry.highlights && entry.highlights.length > 0 ? (
             <ul className="timeline__highlights">

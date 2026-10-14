@@ -75,7 +75,7 @@ export default function TagsPage() {
           </div>
 
           <p className="pagination-note">
-            {articles.length} articles in total.{' '}
+            {articles.length} {articles.length === 1 ? 'piece' : 'pieces'} in total.{' '}
             <Link href="/writing" className="link-underline">
               Read them all →
             </Link>

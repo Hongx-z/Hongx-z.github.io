@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
 
-import { readingTime, slugify } from '@/lib/format';
+import { detectLang, readingTime, slugify } from '@/lib/format';
 import { listMarkdownSlugs } from '@/lib/content';
 import { extractHeadings, markdownToHtml, toPlainText, type Heading } from '@/lib/markdown';
 
@@ -19,6 +19,12 @@ export interface ArticleMeta {
   cover?: string;
   draft: boolean;
   readingTime: string;
+  /**
+   * The language the piece is written in, when it is not English. Detected
+   * from the body unless the frontmatter says otherwise — it only changes
+   * typography (leading, and no drop cap for Chinese).
+   */
+  lang?: string;
 }
 
 export interface Article extends ArticleMeta {
@@ -80,6 +86,9 @@ function readArticleFile(slug: string): ArticleMeta & { body: string } {
     cover: asString(data.cover) || undefined,
     draft: data.draft === true,
     readingTime: readingTime(body),
+    // Frontmatter wins, so an unusual piece can say what it is; otherwise we
+    // read the body, which is right almost every time.
+    lang: asString(data.lang) || detectLang(body),
     body,
   };
 }

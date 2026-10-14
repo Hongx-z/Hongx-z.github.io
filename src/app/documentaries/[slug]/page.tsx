@@ -13,7 +13,7 @@ import {
   getDocumentary,
   getDocumentarySlugs,
 } from '@/lib/documentaries';
-import { formatDate } from '@/lib/format';
+import { decodeRouteParam, formatDate } from '@/lib/format';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -24,7 +24,7 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = await params;
+  const slug = decodeRouteParam((await params).slug);
   const film = await getDocumentary(slug);
 
   return {
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function DocumentaryPage({ params }: PageProps) {
-  const { slug } = await params;
+  const slug = decodeRouteParam((await params).slug);
 
   if (!getDocumentarySlugs().includes(slug)) {
     notFound();

@@ -16,6 +16,38 @@
  */
 export const roles: string[] = ['Writer', 'Documentary filmmaker'];
 
+/**
+ * One way to reach you.
+ *
+ * Not every platform has a public profile page — WeChat least of all. So a
+ * contact is either a link (`href`), or an id a reader has to type in
+ * (`handle`), or both. Entries with only a handle are rendered as a copyable
+ * id rather than a link that goes nowhere.
+ */
+export interface ContactLink {
+  /** Shown on the page. */
+  label: string;
+  /** Profile URL. Leave it out when there is nothing to link to. */
+  href?: string;
+  /** The account name a reader would search for. Rendered copyable. */
+  handle?: string;
+}
+
+/**
+ * Where to find you. Delete any you do not use.
+ *
+ * Filling in an `href` turns the label into a link on its own — do that once
+ * you know your profile URLs. A handle with no href is still useful: readers
+ * can copy it and search for you themselves.
+ */
+export const links: ContactLink[] = [
+  { label: 'GitHub', href: 'https://github.com/Hongx-z' },
+  { label: 'WeChat', handle: 'helena_z99' },
+  { label: 'Instagram', handle: 'your-instagram', href: '' },
+  { label: 'Xiaohongshu', handle: 'your-red-id', href: '' },
+  { label: 'Email', href: 'mailto:helena_z99@163.com' },
+];
+
 export const site = {
   /** Your name, as you want it to appear. */
   name: 'H. Zhu',
@@ -30,7 +62,7 @@ export const site = {
 
   /** Used for <meta name="description"> and social previews. */
   description:
-    'I write about people and places. I make films about them. Stories about work, ordinary lives, and places in transition — every word and every video is a file in the repository.',
+    'I write about people and places. I make films about them. Writing and films about work, ordinary lives, and places in transition — every word and every video is a file in the repository.',
 
   /**
    * The one concrete sentence under your name. The redesign brief is firm on
@@ -45,9 +77,6 @@ export const site = {
    */
   introNote: 'Neither half is meant to be the whole of what I am.',
 
-  /** The one-line promise under the name, above the intro. */
-  positioning: 'Stories about people, work, and places.',
-
   /**
    * Base URL of the deployed site. Used for canonical links and absolute
    * social-preview URLs. Update after your first deploy (see the manual).
@@ -58,11 +87,8 @@ export const site = {
   email: 'helena_z99@163.com',
   location: 'Nanjing',
 
-  /** Social links. Delete any you do not use. */
-  links: [
-    { label: 'GitHub', href: 'https://github.com/Hongx-z' },
-    { label: 'Email', href: 'mailto:helena_z99@163.com' },
-  ],
+  /** Social links — defined at the top of this file, next to `roles`. */
+  links,
 
   /**
    * Primary navigation. Deliberately short — four items, per the redesign

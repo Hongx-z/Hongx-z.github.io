@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import { ColophonGlyph } from '@/components/ColophonGlyph';
+import { ContactLinks } from '@/components/ContactLinks';
 import { LiveClock } from '@/components/LiveClock';
 import { site } from '@/data/site';
 
@@ -18,18 +19,7 @@ export function SiteFooter() {
         </div>
 
         <div className="footer__links">
-          {site.links.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="link-underline"
-              {...(link.href.startsWith('http')
-                ? { target: '_blank', rel: 'noreferrer noopener' }
-                : {})}
-            >
-              {link.label}
-            </a>
-          ))}
+          <ContactLinks />
           <Link href="/about" className="link-underline">
             About
           </Link>

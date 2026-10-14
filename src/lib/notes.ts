@@ -2,7 +2,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
 
+import { detectLang } from '@/lib/format';
 import { markdownToHtml } from '@/lib/markdown';
+
+import { compareNotes } from '@/lib/note-order';
 
 const NOTES_DIR = path.join(process.cwd(), 'content', 'notes');
 
@@ -10,11 +13,18 @@ export interface Note {
   slug: string;
   /** ISO date, e.g. '2026-09-23'. */
   date: string;
+  /** Pinned notes sit above the newest ones. Set `pinned: true` in the file. */
+  pinned: boolean;
   body: string;
   html: string;
+  /**
+   * 'zh' when the note is written in Chinese, so the page can set it with the
+   * looser leading Chinese wants. Undefined for English.
+   */
+  lang?: string;
 }
 
-function readNoteFile(slug: string): { date: string; body: string } {
+function readNoteFile(slug: string): { date: string; pinned: boolean; body: string } {
   const raw = fs.readFileSync(path.join(NOTES_DIR, `${slug}.md`), 'utf8');
   const { data, content } = matter(raw);
   const body = content.trim();
@@ -23,7 +33,7 @@ function readNoteFile(slug: string): { date: string; body: string } {
     throw new Error(`content/notes/${slug}.md is missing a 'date' field.`);
   }
 
-  return { date: data.date.trim(), body };
+  return { date: data.date.trim(), pinned: data.pinned === true, body };
 }
 
 export function getNoteSlugs(): string[] {
@@ -35,14 +45,21 @@ export function getNoteSlugs(): string[] {
     .map((file) => file.replace(/\.md$/, ''));
 }
 
-/** Field notes, newest first. A note is one short observation — 50–150 words. */
+/** Field notes, pinned first and then newest first. One note is one short observation. */
 export async function getAllNotes(): Promise<Note[]> {
   const notes = await Promise.all(
     getNoteSlugs().map(async (slug) => {
-      const { date, body } = readNoteFile(slug);
-      return { slug, date, body, html: await markdownToHtml(body) };
+      const { date, pinned, body } = readNoteFile(slug);
+      return {
+        slug,
+        date,
+        pinned,
+        body,
+        html: await markdownToHtml(body),
+        lang: detectLang(body),
+      };
     }),
   );
 
-  return notes.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : a.slug.localeCompare(b.slug)));
+  return notes.sort(compareNotes);
 }

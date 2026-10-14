@@ -7,6 +7,13 @@
  *
  * Dates use "YYYY-MM" (or "YYYY" for year-only). Leave `end` out to mean
  * "still ongoing".
+ *
+ * `note` is a second, quieter line under an entry — somewhere to put a remark
+ * in Chinese (中文备注) without disturbing the English summary above it. The
+ * timeline is a place where a Chinese line often says more than a translated
+ * one: an institution's own name, a title as it was actually held, what the
+ * work was called at the time. Write it in whichever language the fact lives
+ * in; the type is set for both.
  */
 
 export type TimelineKind = 'work' | 'education' | 'project';
@@ -23,6 +30,11 @@ export interface TimelineEntry {
   location?: string;
   /** One or two sentences. Rendered as plain text. */
   summary: string;
+  /**
+   * Optional quieter line under the summary — the place for a Chinese remark
+   * (中文备注) or a name in its original form. Rendered as plain text.
+   */
+  note?: string;
   /** Optional bullet list of concrete outcomes. */
   highlights?: string[];
   /** Must match tag slugs used in your articles if you want cross-links. */
@@ -49,6 +61,7 @@ export const timeline: TimelineEntry[] = [
     location: 'IDK',
     summary:
       'Making short observational documentaries about people whose work is easy to overlook. Typically one film every four to six months, shot and cut alone on a two-person crew.',
+    note: '拍摄那些容易被忽略的职业与日常。基本独自完成拍摄与剪辑，一部短片约四到六个月。',
     highlights: [
       'TBC.',
       'TBC.',
@@ -66,6 +79,7 @@ export const timeline: TimelineEntry[] = [
     location: 'Nanjing, PRC China',
     summary:
       'Wrote hundreds of articles, including product introductions, project promotions, and popular science articles. Involved in events, coordinating with the media, and writing interview drafts',
+    note: '南京 · 内容以产品介绍、项目推广与科普为主，同时参与活动执行、媒体对接与采访稿撰写。',
     highlights: [
       'Published in 2025: 3,600GW Green Installed Capacity: How Do Grid Digital Twins Underpin?',
       'TBC.',
@@ -82,6 +96,7 @@ export const timeline: TimelineEntry[] = [
     location: 'Nanjing, PRC China',
     summary:
       'Designed and developed data dashboards and a comprehensive management platform for standard data. Planned a data management foundation based on first principles. Abortion',
+    note: '南京 · 负责数据看板与标准数据管理平台的设计与开发，并规划数据治理的底层结构。',
     tags: ['reportage'],
   },
   {
@@ -94,6 +109,7 @@ export const timeline: TimelineEntry[] = [
     location: 'Edinburgh, Scotland',
     summary:
       'Thesis on ',
+    note: '爱丁堡大学 · 统计学与数据科学，硕士，以 Distinction 毕业。',
     tags: ['essay'],
   },
   {
@@ -106,6 +122,7 @@ export const timeline: TimelineEntry[] = [
     location: 'Sydney, Australia',
     summary:
       'Thesis on ',
+    note: '悉尼大学 · 数据科学，本科，Dalyell Scholar。',
     tags: ['essay'],
   },
 ];

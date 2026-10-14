@@ -20,11 +20,11 @@ export default function DocumentariesPage() {
   return (
     <section className="container container--wide section">
       <header className="about-head" style={{ paddingTop: 0 }}>
-        <p className="eyebrow">Films · The filmed record</p>
-        <h1 className="about-head__title">Films about other people</h1>
+        <p className="eyebrow">The filmed record</p>
+        <h1 className="about-head__title">Films</h1>
         <p className="about-head__headline lede">
-          {films.length} {films.length === 1 ? 'documentary' : 'documentaries'}, each one about a
-          single person and the work they do when nobody is watching.
+          {films.length} {films.length === 1 ? 'film' : 'films'}, each one about a single person and
+          the work they do when nobody is watching.
         </p>
         <p className="muted" style={{ marginTop: 'var(--space-5)', maxWidth: '44rem' }}>
           {ready < films.length
@@ -46,6 +46,8 @@ export default function DocumentariesPage() {
         ) : null}
       </header>
 
+      <hr className="rule" />
+
       {films.length === 0 ? (
         <div className="empty-state">
           No films yet. Add a Markdown file to <code>content/documentaries/</code> — the filename
@@ -56,10 +58,8 @@ export default function DocumentariesPage() {
           {featured.length > 0 ? (
             <section style={{ marginBottom: 'var(--space-9)' }}>
               <div className="block-head">
-                <h2 className="block-head__title">Featured</h2>
-                <span className="block-head__more meta">
-                  {featured.length} {featured.length === 1 ? 'film' : 'films'}
-                </span>
+                <h2 className="block-head__title">Featured film</h2>
+                <span className="block-head__more meta">Listed first on the home page</span>
               </div>
 
               <ul className="film-grid">
@@ -73,9 +73,7 @@ export default function DocumentariesPage() {
           {rest.length > 0 ? (
             <section>
               <div className="block-head">
-                <h2 className="block-head__title">
-                  {featured.length > 0 ? 'More films' : 'All films'}
-                </h2>
+                <h2 className="block-head__title">All films</h2>
                 <span className="block-head__more meta">
                   Newest first
                   <span className="dot-sep">·</span>

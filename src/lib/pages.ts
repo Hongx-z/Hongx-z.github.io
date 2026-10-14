@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
 
+import { detectLang } from '@/lib/format';
 import { markdownToHtml } from '@/lib/markdown';
 
 const PAGES_DIR = path.join(process.cwd(), 'content', 'pages');
@@ -11,6 +12,16 @@ export interface MarkdownPage<T = Record<string, unknown>> {
   frontmatter: T;
   body: string;
   html: string;
+  /**
+   * 'zh' when the page is written in Chinese — typography only. Taken from a
+   * `lang:` in the frontmatter if there is one, otherwise read off the body.
+   */
+  lang?: string;
+}
+
+function pageLang(data: Record<string, unknown>, body: string): string | undefined {
+  const declared = typeof data.lang === 'string' ? data.lang.trim() : '';
+  return declared || detectLang(body);
 }
 
 export interface AboutFrontmatter {
@@ -67,6 +78,7 @@ export async function getNowPage(): Promise<MarkdownPage<NowFrontmatter> | null>
     frontmatter,
     body,
     html: await markdownToHtml(body),
+    lang: pageLang(data, body),
   };
 }
 
@@ -100,6 +112,7 @@ export async function getSimplePage(
     frontmatter,
     body,
     html: await markdownToHtml(body),
+    lang: pageLang(data, body),
   };
 }
 
@@ -130,5 +143,6 @@ export async function getAboutPage(): Promise<MarkdownPage<AboutFrontmatter>> {
     frontmatter,
     body,
     html: await markdownToHtml(body),
+    lang: pageLang(data, body),
   };
 }

@@ -13,12 +13,12 @@ page, not like an application. No webfonts are downloaded.
 
 ## The stack
 
-Everything here is a file. The articles are Markdown files, the films are
-Markdown files, this page is a Markdown file. A static-site builder turns the
-whole thing into plain HTML once per publish, and GitHub Pages serves the
-result for free. There is no server of mine anywhere in this chain, no
-database, no tracking, no analytics. If the site is down, the repository
-still has every word.
+Everything here is a file. Every piece of writing is a Markdown file, every
+film is a Markdown file, this page is a Markdown file. A static-site builder
+turns the whole thing into plain HTML once per publish, and GitHub Pages
+serves the result for free. There is no server of mine anywhere in this
+chain, no database, no tracking, no analytics. If the site is down, the
+repository still has every word.
 
 ## The quiet features
 

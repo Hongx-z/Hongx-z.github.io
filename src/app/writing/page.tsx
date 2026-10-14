@@ -18,7 +18,7 @@ export default function WritingPage() {
   return (
     <section className="container container--wide section">
       <header className="about-head" style={{ paddingTop: 0 }}>
-        <p className="eyebrow">Writing · The written record</p>
+        <p className="eyebrow">The written record</p>
         <h1 className="about-head__title">Writing</h1>
         <p className="about-head__headline lede">
           {articles.length} {articles.length === 1 ? 'piece' : 'pieces'} — essays, reportage and
@@ -26,14 +26,18 @@ export default function WritingPage() {
         </p>
       </header>
 
-      <div className="block-head">
-        <h2 className="block-head__title">All articles</h2>
-        <Link href="/tags" className="block-head__more link-underline">
-          {tags.length} tags →
-        </Link>
-      </div>
+      <hr className="rule" />
 
       <ArticleList articles={articles} />
+
+      {tags.length > 0 ? (
+        <p className="pagination-note">
+          Filed under {tags.length} tags, shared with the films.{' '}
+          <Link href="/tags" className="link-underline">
+            Browse by tag →
+          </Link>
+        </p>
+      ) : null}
     </section>
   );
 }

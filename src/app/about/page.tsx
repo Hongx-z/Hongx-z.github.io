@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 import { ArticleList } from '@/components/ArticleList';
+import { ContactLinks } from '@/components/ContactLinks';
 import { HonorList } from '@/components/HonorList';
 import { Prose } from '@/components/Prose';
 import { Timeline } from '@/components/Timeline';
@@ -13,7 +14,7 @@ import { getAboutPage } from '@/lib/pages';
 export const metadata: Metadata = {
   title: 'About',
   description:
-    'A written record of a working life: the timeline, the honors, and the articles that came out of it.',
+    'A written record of a working life: the timeline, the honors, and the writing that came out of it.',
 };
 
 export default async function AboutPage() {
@@ -46,7 +47,7 @@ export default async function AboutPage() {
       <section className="container section">
         <div className="about-grid">
           <div>
-            <Prose html={page.html} />
+            <Prose html={page.html} lang={page.lang} />
           </div>
 
           <aside className="about-aside">
@@ -73,26 +74,15 @@ export default async function AboutPage() {
 
             <div className="about-aside__row">
               <span className="about-aside__label">Elsewhere</span>
+              {/* WeChat and the other handle-only accounts are copyable rather
+                  than linked — copy the id, search for it in the app. */}
               <span className="about-aside__value">
-                {site.links.map((link, index) => (
-                  <span key={link.href}>
-                    {index > 0 ? <span className="dot-sep">·</span> : null}
-                    <a
-                      className="link-underline"
-                      href={link.href}
-                      {...(link.href.startsWith('http')
-                        ? { target: '_blank', rel: 'noreferrer noopener' }
-                        : {})}
-                    >
-                      {link.label}
-                    </a>
-                  </span>
-                ))}
+                <ContactLinks showHandles />
               </span>
             </div>
 
             <Link href="/writing" className="link-underline">
-              All {articles.length} articles →
+              All writing →
             </Link>
           </aside>
         </div>
@@ -126,7 +116,7 @@ export default async function AboutPage() {
         <div className="block-head">
           <h2 className="block-head__title">Selected writing</h2>
           <Link href="/writing" className="block-head__more link-underline">
-            All articles →
+            All writing →
           </Link>
         </div>
 

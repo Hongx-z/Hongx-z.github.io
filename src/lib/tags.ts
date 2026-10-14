@@ -77,11 +77,11 @@ export function getTagContents(slug: string): TagContents | null {
   };
 }
 
-/** Human summary, e.g. "3 articles · 1 film". */
+/** Human summary, e.g. "3 pieces · 1 film". */
 export function describeTag(tag: TagSummary): string {
   const parts: string[] = [];
   if (tag.articleCount > 0) {
-    parts.push(`${tag.articleCount} ${tag.articleCount === 1 ? 'article' : 'articles'}`);
+    parts.push(`${tag.articleCount} ${tag.articleCount === 1 ? 'piece' : 'pieces'}`);
   }
   if (tag.filmCount > 0) {
     parts.push(`${tag.filmCount} ${tag.filmCount === 1 ? 'film' : 'films'}`);

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import { FilmPoster } from '@/components/FilmPoster';
+import { Prose } from '@/components/Prose';
 import { site } from '@/data/site';
 import { getAllArticles } from '@/lib/articles';
 import { getAllDocumentaries } from '@/lib/documentaries';
@@ -9,7 +10,7 @@ import { getAllNotes } from '@/lib/notes';
 import { getNowPage } from '@/lib/pages';
 
 export default async function HomePage() {
-  // Explain first (intro), intrigue second (stories, films), poetic third
+  // Explain first (intro), intrigue second (writing, films), poetic third
   // (the Now block and the field notes) — in that order.
   const articles = getAllArticles().slice(0, 4);
   const films = getAllDocumentaries();
@@ -28,8 +29,6 @@ export default async function HomePage() {
 
         <p className="hero__tagline lede">{site.tagline}</p>
 
-        <p className="hero__positioning lede">{site.positioning}</p>
-
         <p className="hero__intro">{site.intro}</p>
 
         <div className="hero__links">
@@ -46,30 +45,30 @@ export default async function HomePage() {
 
       <hr className="rule" />
 
-      {/* ------------------------------ Featured writing ------------------------------ */}
+      {/* ------------------------------ Writing ------------------------------ */}
       <section className="container section">
         <div className="block-head">
-          <h2 className="block-head__title">Stories</h2>
+          <h2 className="block-head__title">Writing</h2>
           <Link href="/writing" className="block-head__more link-underline">
-            Read all stories →
+            All writing →
           </Link>
         </div>
 
         {articles.length > 0 ? (
-          <ol className="stories">
+          <ol className="writing-block">
             {articles.map((article) => (
-              <li key={article.slug} className="stories__item">
-                <h3 className="stories__title">
+              <li key={article.slug} className="writing-block__item">
+                <h3 className="writing-block__title">
                   <Link href={`/writing/${article.slug}`}>{article.title}</Link>
                 </h3>
-                <p className="stories__summary">{article.summary}</p>
-                <p className="stories__meta meta">{formatDateShort(article.date)}</p>
+                <p className="writing-block__summary">{article.summary}</p>
+                <p className="writing-block__meta meta">{formatDateShort(article.date)}</p>
               </li>
             ))}
           </ol>
         ) : (
           <div className="empty-state">
-            No stories yet. Add a Markdown file to <code>content/articles/</code>.
+            No writing yet. Add a Markdown file to <code>content/articles/</code>.
           </div>
         )}
       </section>
@@ -163,7 +162,7 @@ export default async function HomePage() {
               </p>
             ) : null}
 
-            <div className="now-block__list prose" dangerouslySetInnerHTML={{ __html: now.html }} />
+            <Prose html={now.html} lang={now.lang} className="now-block__list" />
           </section>
         </>
       ) : null}
@@ -188,11 +187,16 @@ export default async function HomePage() {
             <ol className="field-notes">
               {notes.map((note) => (
                 <li key={note.slug} className="field-notes__item">
-                  <p className="field-notes__date meta">{formatDayMonth(note.date)}</p>
-                  <div
-                    className="field-notes__body prose"
-                    dangerouslySetInnerHTML={{ __html: note.html }}
-                  />
+                  <p className="field-notes__date meta">
+                    {formatDayMonth(note.date)}
+                    {note.pinned ? (
+                      <>
+                        <span className="dot-sep">·</span>
+                        <span className="field-notes__pin">Pinned</span>
+                      </>
+                    ) : null}
+                  </p>
+                  <Prose html={note.html} lang={note.lang} className="field-notes__body" />
                 </li>
               ))}
             </ol>

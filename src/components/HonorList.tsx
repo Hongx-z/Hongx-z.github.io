@@ -1,4 +1,5 @@
 import { honors } from '@/data/resume';
+import { detectLang } from '@/lib/format';
 
 export function HonorList() {
   if (honors.length === 0) {
@@ -34,7 +35,16 @@ export function HonorList() {
             </h3>
 
             {honor.issuer ? <p className="honor__issuer">{honor.issuer}</p> : null}
-            {honor.note ? <p className="honor__note">{honor.note}</p> : null}
+            {/* The note is the place for a Chinese line, so it carries its own
+                language marker when it is written in one. */}
+            {honor.note ? (
+              <p
+                className="honor__note"
+                {...(detectLang(honor.note) === 'zh' ? { lang: 'zh' } : {})}
+              >
+                {honor.note}
+              </p>
+            ) : null}
           </div>
         </li>
       ))}

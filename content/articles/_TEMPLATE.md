@@ -8,7 +8,11 @@
 #   1. Copy this file to content/articles/<your-slug>.md
 #      The filename becomes the URL: content/articles/my-piece.md -> /writing/my-piece/
 #   2. Fill in the frontmatter below (delete the "#" to uncomment optional lines)
-#   3. Write the body in Markdown
+#   3. Write the body in Markdown, under the closing "---"
+#
+# Everything between the two "---" lines is frontmatter, and lines starting
+# with "#" in it are comments. The first "---" must be the very first line of
+# the file.
 #
 # Required: title, date.  Everything else is optional.
 # ===========================================================================
@@ -22,12 +26,18 @@ summary: >-
 tags:
   - Essay                              # Your own words. "Field Notes" and
   - Craft                              # "field-notes" are the same tag.
+                                       # Chinese tags work too: 随笔 keeps its own name.
 # cover: /images/your-image.jpg        # optional; file goes in public/images/
 # draft: true                          # optional; hides it from the built site
+# lang: zh                             # optional. Leave it out and the site decides
+                                       # by reading the body — write in Chinese and
+                                       # it sets itself with Chinese leading and no
+                                       # drop cap automatically.
 ---
 
-Opening paragraph. On an article this is set as a drop cap, so lead with
-something worth setting large.
+Opening paragraph. On an English article this is set as a drop cap, so lead with
+something worth setting large. A Chinese article gets no drop cap — one giant
+character is a wall, not an ornament.
 
 ## A section heading
 

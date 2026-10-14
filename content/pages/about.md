@@ -3,7 +3,7 @@
 # SAMPLE CONTENT — replace this file with your own.
 # The frontmatter below controls the header of the "About" page.
 # ---------------------------------------------------------------------------
-title: About
+title: About me
 headline: >-
   I write and I film. Those are not the only two things I do, and this page is
   a record of all of it — not just the part that has a job title.
@@ -21,7 +21,7 @@ I have spent about ten years writing about work, and the last four of those also
 
 I write long-form reportage and essays, and I make short observational documentaries. The two feed each other. Reporting teaches you where to stand; filming teaches you when to shut up.
 
-Most of my subjects come from the same source: somebody mentions a job I did not know existed, and I cannot let it go. A water reader who can tell you the level of an aquifer by the sound of a pump. A woman who has baked the same nine hundred loaves every morning for twenty-six years.
+Most of my subjects come from the same source: somebody mentions a job I did not know existed, and I cannot let it go. A water reader who can tell you the level of an aquifer by the sound a pump makes. A woman who ran the same extrusion line for nineteen years and switched it off on the plant's last night.
 
 Those two things are the bulk of the record below. They are not the whole of it, and I have stopped pretending otherwise — the timeline further down this page is deliberately built to hold whatever the work turns out to be, not just the parts that were published or screened.
 

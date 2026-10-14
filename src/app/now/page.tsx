@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 import { FieldNoteComposer } from '@/components/FieldNoteComposer';
+import { Prose } from '@/components/Prose';
 import { site } from '@/data/site';
 import { getAllNotes } from '@/lib/notes';
 import { getNowPage } from '@/lib/pages';
@@ -30,7 +31,7 @@ export default async function NowPage() {
   return (
     <section className="container section">
       <header className="about-head" style={{ paddingTop: 0 }}>
-        <p className="eyebrow">Now · The current page</p>
+        <p className="eyebrow">The current page</p>
         <h1 className="about-head__title">{now?.frontmatter.title ?? 'Now'}</h1>
         <p className="about-head__headline lede">
           What I am working on at the moment — and the small things I noticed along the way.
@@ -48,7 +49,7 @@ export default async function NowPage() {
                 .join(' · ')}
             </p>
 
-            <div className="now-block__list prose" dangerouslySetInnerHTML={{ __html: now.html }} />
+            <Prose html={now.html} lang={now.lang} className="now-block__list" />
           </div>
         </>
       ) : null}
@@ -58,13 +59,6 @@ export default async function NowPage() {
       <section>
         <div className="block-head">
           <h2 className="block-head__title">Field notes</h2>
-          {notes.length > 0 ? (
-            <span className="block-head__more meta">
-              {notes.length} {notes.length === 1 ? 'note' : 'notes'}
-              <span className="dot-sep">·</span>
-              Newest first
-            </span>
-          ) : null}
         </div>
 
         <p className="muted" style={{ marginBottom: 'var(--space-6)', maxWidth: '40rem' }}>
@@ -76,10 +70,12 @@ export default async function NowPage() {
           .
         </p>
 
-        {/* The list and the private "note to myself" box live together, so the
-            author's edits and the readers' view never disagree. See 9.5 in the
-            manual for the token it asks for. */}
-        <FieldNoteComposer notes={notes} />
+        {/* The list, its count and the private "note to myself" box live
+            together, so the numbers the author sees are always the ones on
+            screen. See 9.5 in the manual for the token it asks for. */}
+        <FieldNoteComposer
+          notes={notes.map(({ slug, date, pinned, html, lang }) => ({ slug, date, pinned, html, lang }))}
+        />
       </section>
 
       <hr className="rule" style={{ marginBlock: 'var(--space-7)' }} />

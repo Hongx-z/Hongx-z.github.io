@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 
 import { ArticleList } from '@/components/ArticleList';
 import { FilmList } from '@/components/FilmList';
+import { decodeRouteParam } from '@/lib/format';
 import { describeTag, getAllTagSummaries, getTagContents } from '@/lib/tags';
 
 interface PageProps {
@@ -15,7 +16,8 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { tag } = await params;
+  const { tag: raw } = await params;
+  const tag = decodeRouteParam(raw);
   const match = getAllTagSummaries().find((entry) => entry.slug === tag);
 
   return {
@@ -27,7 +29,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function TagPage({ params }: PageProps) {
-  const { tag } = await params;
+  const { tag: raw } = await params;
+  const tag = decodeRouteParam(raw);
   const contents = getTagContents(tag);
 
   if (!contents) {
@@ -51,7 +54,7 @@ export default async function TagPage({ params }: PageProps) {
 
       {articles.length > 0 ? (
         <div className="block-head">
-          <h2 className="block-head__title">Articles</h2>
+          <h2 className="block-head__title">Writing</h2>
           <span className="block-head__more meta">{summary.articleCount}</span>
         </div>
       ) : null}
