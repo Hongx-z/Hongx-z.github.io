@@ -10,42 +10,86 @@ import { getAllNotes } from '@/lib/notes';
 import { getNowPage } from '@/lib/pages';
 
 export default async function HomePage() {
-  // Explain first (intro), intrigue second (writing, films), poetic third
-  // (the Now block and the field notes) — in that order.
-  const articles = getAllArticles().slice(0, 4);
+  // The order is deliberate: who (name), what (the claim), how (the three
+  // figures), why it matters (the quote), then the work itself.
+  const articles = getAllArticles().slice(0, 3);
   const films = getAllDocumentaries();
-  const featuredFilm = films[0];
-  const otherFilms = films.slice(1, 4);
-  const notes = (await getAllNotes()).slice(0, 2);
+  const featuredFilm = films.find((film) => film.featured) ?? films[0];
+  const otherFilms = films.filter((film) => film.slug !== featuredFilm?.slug).slice(0, 2);
+  const notes = (await getAllNotes()).slice(0, 3);
   const now = await getNowPage();
 
   return (
     <>
       {/* ------------------------------ Introduction ------------------------------ */}
       <section className="container hero">
-        <p className="eyebrow">Personal site</p>
+        <div className="hero__grid">
+          <div className="hero__main">
+            <p className="eyebrow">{site.tagline}</p>
 
-        <h1 className="hero__name">{site.name}</h1>
+            <h1 className="hero__name">{site.name}</h1>
+            <p className="hero__name-zh" lang="zh">
+              {site.nameZh}
+            </p>
 
-        <p className="hero__tagline lede">{site.tagline}</p>
+            <p className="hero__statement">{site.statement}</p>
 
-        <p className="hero__intro">{site.intro}</p>
+            <p className="hero__intro">{site.intro}</p>
 
-        <div className="hero__links">
-          <Link href="/writing" className="link-underline">
-            Read my writing →
-          </Link>
-          <Link href="/documentaries" className="link-underline">
-            Watch my films →
-          </Link>
+            <div className="hero__links">
+              <Link href="/writing" className="hero__link">
+                Read the writing <span aria-hidden="true">→</span>
+              </Link>
+              <Link href="/documentaries" className="hero__link">
+                Watch the films <span aria-hidden="true">→</span>
+              </Link>
+              <Link href="/about" className="hero__link">
+                More about me <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+          </div>
+
+          {now ? (
+            <aside className="hero__aside">
+              <p className="hero__aside-kicker">At the moment</p>
+
+              <Prose html={now.html} lang={now.lang} className="hero__now" />
+
+              <p className="hero__aside-foot meta">
+                {[site.location, now.frontmatter.month].filter(Boolean).join(' · ')}
+              </p>
+
+              <Link href="/now" className="link-underline hero__aside-link">
+                The Now page →
+              </Link>
+            </aside>
+          ) : null}
         </div>
 
-        {site.introNote ? <p className="hero__note">{site.introNote}</p> : null}
+        <ul className="facts">
+          {site.facts.map((fact) => (
+            <li key={fact.label} className="fact">
+              <p className="fact__value">{fact.value}</p>
+              <p className="fact__label">{fact.label}</p>
+              <p className="fact__detail">{fact.detail}</p>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <hr className="rule" />
 
-      {/* ------------------------------ Writing ------------------------------ */}
+      {/* -------------------------------- The stance ------------------------------- */}
+      <section className="container section section--tight creed">
+        <blockquote className="creed__quote">
+          <p>{site.quote}</p>
+        </blockquote>
+        <p className="creed__source meta">From the About page</p>
+      </section>
+
+      <hr className="rule" />
+
+      {/* --------------------------------- Writing -------------------------------- */}
       <section className="container section">
         <div className="block-head">
           <h2 className="block-head__title">Writing</h2>
@@ -55,14 +99,25 @@ export default async function HomePage() {
         </div>
 
         {articles.length > 0 ? (
-          <ol className="writing-block">
+          <ol className="ledger">
             {articles.map((article) => (
-              <li key={article.slug} className="writing-block__item">
-                <h3 className="writing-block__title">
-                  <Link href={`/writing/${article.slug}`}>{article.title}</Link>
-                </h3>
-                <p className="writing-block__summary">{article.summary}</p>
-                <p className="writing-block__meta meta">{formatDateShort(article.date)}</p>
+              <li key={article.slug} className="ledger__item">
+                <p className="ledger__date meta">
+                  {formatDateShort(article.date)}
+                  {article.lang === 'zh' ? (
+                    <>
+                      <span className="dot-sep">·</span>
+                      <span lang="zh">中文</span>
+                    </>
+                  ) : null}
+                </p>
+
+                <div className="ledger__body">
+                  <h3 className="ledger__title">
+                    <Link href={`/writing/${article.slug}`}>{article.title}</Link>
+                  </h3>
+                  <p className="ledger__summary">{article.summary}</p>
+                </div>
               </li>
             ))}
           </ol>
@@ -75,41 +130,54 @@ export default async function HomePage() {
 
       <hr className="rule" />
 
-      {/* ------------------------------ Featured film ------------------------------ */}
+      {/* ---------------------------------- Films --------------------------------- */}
       <section className="container section">
         <div className="block-head">
           <h2 className="block-head__title">Films</h2>
           <Link href="/documentaries" className="block-head__more link-underline">
-            See all films →
+            All films →
           </Link>
         </div>
 
-        <p className="muted" style={{ marginBottom: 'var(--space-6)', maxWidth: '40rem' }}>
-          Short documentaries about people and the places they inhabit.
-        </p>
-
         {featuredFilm ? (
-          <Link href={`/documentaries/${featuredFilm.slug}`} className="film-card__link">
-            <div className="film-card__frame" style={{ marginBottom: 'var(--space-5)' }}>
+          <div className="film-feature">
+            <Link
+              href={`/documentaries/${featuredFilm.slug}`}
+              className="film-feature__poster"
+              aria-label={`${featuredFilm.title} — a film about ${featuredFilm.subject}`}
+            >
               <FilmPoster
                 title={featuredFilm.title}
                 subject={featuredFilm.subject}
                 poster={featuredFilm.poster}
                 seed={featuredFilm.slug}
               />
-            </div>
+            </Link>
 
-            <h3 className="film-card__title">{featuredFilm.title}</h3>
-            <p className="film-card__subject">
-              {featuredFilm.subject}
-              {featuredFilm.runtime ? (
-                <>
-                  <span className="dot-sep">·</span>
-                  {featuredFilm.runtime}
-                </>
-              ) : null}
-            </p>
-          </Link>
+            <div className="film-feature__body">
+              <p className="eyebrow">Latest film</p>
+
+              <h3 className="film-feature__title">
+                <Link href={`/documentaries/${featuredFilm.slug}`}>{featuredFilm.title}</Link>
+              </h3>
+
+              <p className="film-feature__subject">
+                A film about {featuredFilm.subject}
+                {featuredFilm.runtime ? (
+                  <>
+                    <span className="dot-sep">·</span>
+                    {featuredFilm.runtime}
+                  </>
+                ) : null}
+              </p>
+
+              <p className="film-feature__summary">{featuredFilm.summary}</p>
+
+              <Link href={`/documentaries/${featuredFilm.slug}`} className="film-feature__link">
+                Watch the film →
+              </Link>
+            </div>
+          </div>
         ) : (
           <div className="empty-state">
             No films yet. Add a Markdown file to <code>content/documentaries/</code>.
@@ -138,36 +206,7 @@ export default async function HomePage() {
         ) : null}
       </section>
 
-      {/* ---------------------------------- Now ---------------------------------- */}
-      {now ? (
-        <>
-          <hr className="rule" />
-
-          <section className="container section now-block" id="now">
-            <div className="block-head">
-              <h2 className="block-head__title">{now.frontmatter.title}</h2>
-              <Link href="/now" className="block-head__more link-underline">
-                The full Now page →
-              </Link>
-            </div>
-
-            {now.frontmatter.month || now.frontmatter.updated ? (
-              <p className="now-block__month meta">
-                {[
-                  now.frontmatter.month,
-                  now.frontmatter.updated ? `Last updated: ${now.frontmatter.updated}` : '',
-                ]
-                  .filter(Boolean)
-                  .join(' · ')}
-              </p>
-            ) : null}
-
-            <Prose html={now.html} lang={now.lang} className="now-block__list" />
-          </section>
-        </>
-      ) : null}
-
-      {/* ------------------------------- Field notes ------------------------------ */}
+      {/* ------------------------------- Field notes ------------------------------- */}
       {notes.length > 0 ? (
         <>
           <hr className="rule" />
@@ -180,7 +219,7 @@ export default async function HomePage() {
               </Link>
             </div>
 
-            <p className="muted" style={{ marginBottom: 'var(--space-6)', maxWidth: '40rem' }}>
+            <p className="muted section__standfirst">
               Short observations — not everything needs to become a finished essay.
             </p>
 

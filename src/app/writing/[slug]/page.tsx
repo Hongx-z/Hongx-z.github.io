@@ -50,7 +50,7 @@ export default async function ArticlePage({ params }: PageProps) {
   const toc = article.headings.filter((heading) => heading.depth === 2);
 
   return (
-    <article className="container container--wide">
+    <article className="container">
       <ReadingProgress />
 
       <header className="about-head" style={{ paddingBottom: 0 }}>

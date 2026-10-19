@@ -22,7 +22,7 @@ export default async function AboutPage() {
   const articles = getAllArticles();
   const selected = articles.slice(0, 6);
 
-  const { headline, location, email, portrait, status } = page.frontmatter;
+  const { headline, location, portrait, status } = page.frontmatter;
 
   return (
     <>
@@ -63,23 +63,9 @@ export default async function AboutPage() {
               </div>
             ) : null}
 
-            {email ? (
-              <div className="about-aside__row">
-                <span className="about-aside__label">Email</span>
-                <a className="about-aside__value link-underline" href={`mailto:${email}`}>
-                  {email}
-                </a>
-              </div>
-            ) : null}
-
-            <div className="about-aside__row">
-              <span className="about-aside__label">Elsewhere</span>
-              {/* WeChat and the other handle-only accounts are copyable rather
-                  than linked — copy the id, search for it in the app. */}
-              <span className="about-aside__value">
-                <ContactLinks showHandles />
-              </span>
-            </div>
+            {/* Email and the WeChat Official Account sit in the same shape:
+                a label and a value, one per line. */}
+            <ContactLinks variant="rows" />
 
             <Link href="/writing" className="link-underline">
               All writing →

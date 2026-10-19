@@ -16,7 +16,7 @@ export default function TagsPage() {
   const articles = getAllArticles();
 
   return (
-    <section className="container container--wide section">
+    <section className="container section">
       <header className="about-head" style={{ paddingTop: 0 }}>
         <p className="eyebrow">Index</p>
         <h1 className="about-head__title">Tags</h1>

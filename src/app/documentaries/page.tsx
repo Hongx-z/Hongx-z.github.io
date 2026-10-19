@@ -18,7 +18,7 @@ export default function DocumentariesPage() {
   const ready = films.filter((film) => film.video).length;
 
   return (
-    <section className="container container--wide section">
+    <section className="container section">
       <header className="about-head" style={{ paddingTop: 0 }}>
         <p className="eyebrow">The filmed record</p>
         <h1 className="about-head__title">Films</h1>

@@ -55,7 +55,7 @@ export default async function DocumentaryPage({ params }: PageProps) {
   const credits = Object.entries(film.credits);
 
   return (
-    <article className="container container--wide">
+    <article className="container">
       <ReadingProgress />
 
       <header className="film-header">

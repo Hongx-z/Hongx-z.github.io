@@ -1,91 +1,80 @@
-'use client';
-
-import { useState } from 'react';
-
 import { site, type ContactLink } from '@/data/site';
 
 interface ContactLinksProps {
   /**
-   * Print the account id next to each copyable entry. The footer stays compact
-   * and leaves it off; the about page shows it, because that is the page
-   * someone reads when they actually want to find you.
+   * `inline` is the footer: labels separated by middots, nothing else.
+   * `rows` is the About page: a label and its value on their own line — the
+   * same shape for the email address and the WeChat Official Account, so no
+   * contact looks more or less important than the others.
    */
-  showHandles?: boolean;
+  variant?: 'inline' | 'rows';
+}
+
+function ContactValue({ link, className }: { link: ContactLink; className: string }) {
+  const text = link.value ?? link.label;
+
+  if (!link.href) {
+    return <span className={className}>{text}</span>;
+  }
+
+  return (
+    <a
+      className={`${className} link-underline`}
+      href={link.href}
+      {...(link.href.startsWith('http')
+        ? { target: '_blank', rel: 'noreferrer noopener' }
+        : {})}
+    >
+      {text}
+    </a>
+  );
 }
 
 /**
- * Where to find me — the footer's list and the about page's, from one source.
+ * Where to find me — the footer's list and the About page's, from one source.
  *
- * Somewhere to find someone is not always a URL. WeChat has no public profile
- * page at all, and a link to a profile that does not exist is worse than no
- * link. So an entry with an `href` is a link, and an entry with a `handle` is
- * a copyable id: click the mark, the id is on your clipboard, ready to paste
- * into whichever app it belongs to.
+ * A WeChat Official Account has no profile URL to send anyone to, so it is
+ * printed as a value rather than dressed up as a link that goes nowhere.
  */
-export function ContactLinks({ showHandles = false }: ContactLinksProps) {
-  const [status, setStatus] = useState<{ label: string; ok: boolean } | null>(null);
-
-  const copy = async (link: ContactLink) => {
-    if (!link.handle) return;
-
-    try {
-      await navigator.clipboard.writeText(link.handle);
-      setStatus({ label: link.label, ok: true });
-    } catch {
-      // Older browsers, or a page not served over https, refuse the clipboard.
-      setStatus({ label: link.label, ok: false });
-    }
-
-    window.setTimeout(
-      () => setStatus((current) => (current?.label === link.label ? null : current)),
-      2000,
+export function ContactLinks({ variant = 'inline' }: ContactLinksProps) {
+  if (variant === 'rows') {
+    return (
+      <>
+        {site.links.map((link) => (
+          <div key={link.label} className="about-aside__row">
+            <span className="about-aside__label">{link.label}</span>
+            <ContactValue link={link} className="about-aside__value" />
+          </div>
+        ))}
+      </>
     );
-  };
+  }
 
   return (
     <>
-      {site.links.map((link, index) => {
-        const copied = status?.label === link.label;
+      {site.links.map((link, index) => (
+        <span key={link.label} className="contact">
+          {index > 0 ? (
+            <span className="dot-sep" aria-hidden="true">
+              ·
+            </span>
+          ) : null}
 
-        return (
-          <span key={link.label} className="contact">
-            {index > 0 ? (
-              <span className="dot-sep" aria-hidden="true">
-                ·
-              </span>
-            ) : null}
-
-            {link.href ? (
-              <a
-                className="link-underline"
-                href={link.href}
-                {...(link.href.startsWith('http')
-                  ? { target: '_blank', rel: 'noreferrer noopener' }
-                  : {})}
-              >
-                {link.label}
-              </a>
-            ) : (
-              <span className="contact__label">{link.label}</span>
-            )}
-
-            {link.handle ? (
-              <>
-                {showHandles ? <span className="contact__handle">{link.handle}</span> : null}
-                <button
-                  type="button"
-                  className={`contact__copy${copied ? ' contact__copy--done' : ''}`}
-                  onClick={() => void copy(link)}
-                  title={`Copy ${link.handle}`}
-                  aria-label={`Copy ${link.label} id: ${link.handle}`}
-                >
-                  {copied ? (status?.ok ? 'Copied' : 'Copy failed') : '⧉'}
-                </button>
-              </>
-            ) : null}
-          </span>
-        );
-      })}
+          {link.href ? (
+            <a
+              className="link-underline"
+              href={link.href}
+              {...(link.href.startsWith('http')
+                ? { target: '_blank', rel: 'noreferrer noopener' }
+                : {})}
+            >
+              {link.label}
+            </a>
+          ) : (
+            <span className="contact__label">{link.label}</span>
+          )}
+        </span>
+      ))}
     </>
   );
 }

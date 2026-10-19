@@ -41,7 +41,7 @@ export default async function TagPage({ params }: PageProps) {
   const others = getAllTagSummaries().filter((entry) => entry.slug !== tag).slice(0, 12);
 
   return (
-    <section className="container container--wide section">
+    <section className="container section">
       <header className="about-head" style={{ paddingTop: 0 }}>
         <p className="eyebrow">
           <Link href="/tags" className="link-underline">

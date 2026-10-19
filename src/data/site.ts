@@ -19,38 +19,38 @@ export const roles: string[] = ['Writer', 'Documentary filmmaker'];
 /**
  * One way to reach you.
  *
- * Not every platform has a public profile page — WeChat least of all. So a
- * contact is either a link (`href`), or an id a reader has to type in
- * (`handle`), or both. Entries with only a handle are rendered as a copyable
- * id rather than a link that goes nowhere.
+ * A contact is a label plus a destination. `href` makes it a link; `value` is
+ * the thing printed beside it (an address, an account name). A WeChat Official
+ * Account has no public profile page, so it is a value rather than a link —
+ * written in exactly the same form as the email address.
  */
 export interface ContactLink {
   /** Shown on the page. */
   label: string;
-  /** Profile URL. Leave it out when there is nothing to link to. */
+  /** Profile URL or `mailto:`. Leave it out when there is nothing to link to. */
   href?: string;
-  /** The account name a reader would search for. Rendered copyable. */
-  handle?: string;
+  /** The address / account name printed beside the label. */
+  value?: string;
 }
 
 /**
  * Where to find you. Delete any you do not use.
  *
- * Filling in an `href` turns the label into a link on its own — do that once
- * you know your profile URLs. A handle with no href is still useful: readers
- * can copy it and search for you themselves.
+ * Keep this list short: one way to write, one way to follow, one repository.
+ * Replace `朱虹璇` below with the exact name of your Official Account.
  */
 export const links: ContactLink[] = [
-  { label: 'GitHub', href: 'https://github.com/Hongx-z' },
-  { label: 'WeChat', handle: 'helena_z99' },
-  { label: 'Instagram', handle: 'your-instagram', href: '' },
-  { label: 'Xiaohongshu', handle: 'your-red-id', href: '' },
-  { label: 'Email', href: 'mailto:helena_z99@163.com' },
+  { label: 'Email', href: 'mailto:helena_z99@163.com', value: 'helena_z99@163.com' },
+  { label: 'WeChat Official Account', value: '朱虹璇' },
+  { label: 'GitHub', href: 'https://github.com/Hongx-z', value: '@Hongx-z' },
 ];
 
 export const site = {
   /** Your name, as you want it to appear. */
   name: 'H. Zhu',
+
+  /** The same name in Chinese, set quietly under it on the home page. */
+  nameZh: '朱虹璇',
 
   /** Derived from `roles` above — edit that array, not this line. */
   tagline: roles.join(' · '),
@@ -62,7 +62,13 @@ export const site = {
 
   /** Used for <meta name="description"> and social previews. */
   description:
-    'I write about people and places. I make films about them. Writing and films about work, ordinary lives, and places in transition — every word and every video is a file in the repository.',
+    'H. Zhu (朱虹璇) is a writer and documentary filmmaker in Nanjing. Writing and films about work, ordinary lives, and places in transition.',
+
+  /**
+   * The line that carries the home page. A claim, not a job title: it says what
+   * the work is *about* before it says what form the work takes.
+   */
+  statement: 'Most of my work begins with a job I did not know existed.',
 
   /**
    * The one concrete sentence under your name. The redesign brief is firm on
@@ -70,12 +76,33 @@ export const site = {
    */
   intro: 'I write about people and places. I make films about them.',
 
+  /** The standfirst of the home page, in three figures. Keep it to three. */
+  facts: [
+    {
+      value: 'Ten years',
+      label: 'writing about work',
+      detail:
+        'Reportage, essays and interviews — mostly about people whose jobs are easy to overlook.',
+    },
+    {
+      value: 'Four years',
+      label: 'filming it',
+      detail:
+        'Short observational documentaries, usually shot and cut alone, usually in somebody else’s workplace.',
+    },
+    {
+      value: 'One question',
+      label: 'what people actually do all day',
+      detail: 'Described without romance and without condescension.',
+    },
+  ],
+
   /**
-   * The quiet line that follows the concrete introduction — the part that is
-   * allowed to be a little poetic. Kept separate so the first thing a visitor
-   * reads is never the poetry.
+   * The line the home page quotes back. It comes from the About page, where it
+   * has a little more room around it.
    */
-  introNote: 'Neither half is meant to be the whole of what I am.',
+  quote:
+    'I am not interested in the version of a person that exists for an audience. I am interested in the version that exists at 4 a.m. on a Tuesday.',
 
   /**
    * Base URL of the deployed site. Used for canonical links and absolute

@@ -16,7 +16,7 @@ export default function WritingPage() {
   const tags = getAllTagSummaries();
 
   return (
-    <section className="container container--wide section">
+    <section className="container section">
       <header className="about-head" style={{ paddingTop: 0 }}>
         <p className="eyebrow">The written record</p>
         <h1 className="about-head__title">Writing</h1>

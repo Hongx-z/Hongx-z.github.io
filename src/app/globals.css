@@ -28,8 +28,7 @@
     "Liberation Mono", monospace;
 
   --measure: 34rem;        /* ~68 characters — the prose column */
-  --width-page: 68rem;     /* outer grid width */
-  --width-wide: 82rem;
+  --width-page: 68rem;     /* the one page width every route uses */
 
   --step--1: 0.8125rem;
   --step-0: 1.0625rem;
@@ -142,10 +141,6 @@ a {
   padding-inline: var(--space-5);
 }
 
-.container--wide {
-  max-width: var(--width-wide);
-}
-
 .container--prose {
   max-width: calc(var(--measure) + var(--space-5) * 2);
 }
@@ -171,10 +166,20 @@ main {
   padding-block: var(--space-7);
 }
 
-/* A hairline that spans the container, used between major blocks. */
+/* A hairline between major blocks. It sits inside the same column as the
+   text, so every page has one left edge rather than a full-bleed rule that
+   only happens to look aligned on some screen widths. */
 .rule {
   border: 0;
   border-top: 1px solid var(--rule);
+  max-width: calc(var(--width-page) - var(--space-5) * 2);
+  margin-inline: var(--space-5);
+}
+
+@media (min-width: 71rem) {
+  .rule {
+    margin-inline: auto;
+  }
 }
 
 /* ==========================================================================
@@ -291,34 +296,65 @@ main {
 }
 
 /* ==========================================================================
-   Hero
+   Hero — the home page's opening spread
+   Name at display size, the claim underneath it, and the live "now" column
+   set like a margin note rather than a card.
    ========================================================================== */
 
 .hero {
   padding-block: var(--space-9) var(--space-8);
 }
 
+.hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-8);
+}
+
+@media (min-width: 60rem) {
+  .hero__grid {
+    grid-template-columns: minmax(0, 1fr) 16.5rem;
+    gap: var(--space-9);
+    align-items: start;
+  }
+}
+
 .hero__name {
+  margin-top: var(--space-5);
   font-family: var(--font-serif);
-  font-size: clamp(2.25rem, 6vw, var(--step-5));
-  line-height: 1.05;
-  letter-spacing: -0.02em;
+  font-size: clamp(3.25rem, 9.5vw, 6.25rem);
+  line-height: 0.92;
+  letter-spacing: -0.04em;
   font-weight: 600;
+}
+
+.hero__name-zh {
+  margin-top: var(--space-3);
+  font-family: var(--font-serif);
+  font-size: var(--step-1);
+  font-weight: 400;
+  letter-spacing: 0.42em;
+  color: var(--ink-muted);
+}
+
+/* The claim. Large enough to be the second thing you see, short enough that
+   nobody has to scroll to finish it. */
+.hero__statement {
+  margin-top: var(--space-7);
+  max-width: 26ch;
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 3.4vw, 2.25rem);
+  line-height: 1.28;
+  letter-spacing: -0.015em;
+  color: var(--ink);
   text-wrap: balance;
 }
 
-.hero__tagline {
-  margin-top: var(--space-4);
-  max-width: 32rem;
-}
-
-/* The one concrete sentence under the name. */
 .hero__intro {
-  margin-top: var(--space-6);
+  margin-top: var(--space-5);
   max-width: var(--measure);
-  font-family: var(--font-serif);
-  font-size: var(--step-1);
-  line-height: 1.6;
+  font-size: var(--step-0);
+  line-height: 1.7;
   color: var(--ink-soft);
 }
 
@@ -326,58 +362,310 @@ main {
   margin-top: var(--space-6);
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-5);
+  gap: var(--space-3) var(--space-6);
   font-size: var(--step--1);
 }
 
-/* The quiet line that comes after the concrete introduction. */
-.hero__note {
-  margin-top: var(--space-7);
-  max-width: var(--measure);
+.hero__link {
+  text-decoration: none;
+  color: var(--ink-soft);
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid var(--rule-strong);
+  transition: color 180ms ease, border-color 180ms ease;
+}
+
+.hero__link:hover,
+.hero__link:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.hero__link span {
+  display: inline-block;
+  transition: transform 180ms ease;
+}
+
+.hero__link:hover span {
+  transform: translateX(3px);
+}
+
+/* The Now column. A rule above it, no box, no shadow — a note in the margin,
+   not a widget. */
+.hero__aside {
+  border-top: 1px solid var(--ink);
+  padding-top: var(--space-4);
+}
+
+.hero__aside-kicker {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.hero__now.prose {
+  margin-top: var(--space-4);
   font-family: var(--font-serif);
-  font-style: italic;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.hero__now.prose ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  display: grid;
+  gap: var(--space-3);
+}
+
+.hero__now.prose li {
+  padding-left: var(--space-3);
+  border-left: 1px solid var(--rule-strong);
+}
+
+.hero__now.prose li + li {
+  margin-top: 0;
+}
+
+.hero__aside-foot {
+  margin-top: var(--space-5);
+  color: var(--ink-faint);
+}
+
+.hero__aside-link {
+  display: inline-block;
+  margin-top: var(--space-2);
+  font-size: var(--step--1);
+  color: var(--ink-muted);
+}
+
+/* Three figures under the hero: the shortest honest description of the work. */
+.facts {
+  list-style: none;
+  margin: var(--space-8) 0 0;
+  padding: var(--space-5) 0 0;
+  border-top: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+}
+
+@media (min-width: 48rem) {
+  .facts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-7);
+  }
+}
+
+.fact {
+  display: grid;
+  align-content: start;
+  gap: 0.2rem;
+}
+
+.fact__value {
+  font-family: var(--font-serif);
+  font-size: var(--step-2);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.fact__label {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.fact__detail {
+  margin-top: var(--space-2);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+/* The pull quote, given the width of the page and nothing else to compete with. */
+.creed {
+  padding-block: var(--space-8);
+}
+
+.creed__quote {
+  max-width: 50rem;
+}
+
+.creed__quote p {
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  line-height: 1.4;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.creed__quote p::before {
+  content: "\201C";
+  color: var(--accent);
+}
+
+.creed__quote p::after {
+  content: "\201D";
+  color: var(--accent);
+}
+
+.creed__source {
+  margin-top: var(--space-4);
   color: var(--ink-faint);
 }
 
 /* ==========================================================================
-   Home — Stories (featured writing)
-   Titles carry the weight; tags and dates stay quiet.
+   Home — Writing
+   A ledger rather than a stack of cards: date in the margin, title and
+   standfirst in the column, one hairline per entry.
    ========================================================================== */
 
-.writing-block {
+.ledger {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+.ledger__item {
   display: grid;
-  gap: var(--space-7);
+  grid-template-columns: 7rem minmax(0, 1fr);
+  gap: var(--space-5);
+  padding-block: var(--space-5);
+  border-bottom: 1px solid var(--rule);
 }
 
-.writing-block__title {
+.ledger__date {
+  padding-top: 0.5rem;
+  color: var(--ink-faint);
+}
+
+.ledger__title {
   font-family: var(--font-serif);
-  font-size: var(--step-3);
-  line-height: 1.2;
+  font-size: var(--step-2);
+  line-height: 1.25;
   letter-spacing: -0.01em;
+  text-wrap: balance;
 }
 
-.writing-block__title a {
+.ledger__title a {
   color: inherit;
   text-decoration: none;
+  transition: color 160ms ease;
 }
 
-.writing-block__title a:hover,
-.writing-block__title a:focus-visible {
+.ledger__title a:hover,
+.ledger__title a:focus-visible {
   color: var(--accent);
 }
 
-.writing-block__summary {
+.ledger__summary {
   margin-top: var(--space-2);
   max-width: 42rem;
   color: var(--ink-muted);
   line-height: 1.6;
+  text-wrap: pretty;
 }
 
-.writing-block__meta {
+@media (max-width: 40rem) {
+  .ledger__item {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+
+  .ledger__date {
+    padding-top: 0;
+  }
+}
+
+/* ==========================================================================
+   Home — The featured film
+   Poster on the left at the width a 16:9 frame wants, the note beside it.
+   ========================================================================== */
+
+.film-feature {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+}
+
+@media (min-width: 56rem) {
+  .film-feature {
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: var(--space-8);
+    align-items: center;
+  }
+}
+
+.film-feature__poster {
+  display: block;
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--paper-sunk);
+}
+
+.film-feature__title {
+  margin-top: var(--space-3);
+  font-family: var(--font-serif);
+  font-size: var(--step-3);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.film-feature__title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.film-feature__title a:hover,
+.film-feature__title a:focus-visible {
+  color: var(--accent);
+}
+
+.film-feature__subject {
   margin-top: var(--space-2);
+  font-size: var(--step--1);
+  color: var(--ink-muted);
+}
+
+.film-feature__summary {
+  margin-top: var(--space-4);
+  max-width: 30rem;
+  color: var(--ink-soft);
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+
+.film-feature__link {
+  display: inline-block;
+  margin-top: var(--space-5);
+  padding-bottom: 0.2rem;
+  font-size: var(--step--1);
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule-strong);
+  transition: color 180ms ease, border-color 180ms ease;
+}
+
+.film-feature__link:hover,
+.film-feature__link:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* A standfirst under a section head, used by the field notes. */
+.section__standfirst {
+  margin-bottom: var(--space-6);
+  max-width: 40rem;
 }
 
 /* ==========================================================================
@@ -1699,43 +1987,16 @@ main {
 
 /* --------------------------------------------------------------------------
    Contact entries
-   A label, an optional account id, and the mark that copies it. WeChat has no
-   profile page to send anyone to, so its id travels by clipboard instead.
+   Everything is a label and a destination. Email and the WeChat Official
+   Account are printed the same way; only one of them happens to be a link.
    -------------------------------------------------------------------------- */
 
 .contact__label {
   color: var(--ink-muted);
 }
 
-.contact__handle {
-  margin-inline-start: 0.45em;
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  color: var(--ink-faint);
-}
-
-.contact__copy {
-  border: none;
-  background: none;
-  padding: 0;
-  margin-inline-start: 0.4em;
-  cursor: pointer;
-  font-size: 0.75rem;
-  line-height: 1;
-  color: var(--ink-faint);
-  transition: color 200ms ease;
-}
-
-.contact__copy:hover,
-.contact__copy:focus-visible {
-  color: var(--accent);
-}
-
-/* "Copied" replaces the mark for a moment, so the click says something. */
-.contact__copy--done {
-  color: var(--accent);
-  font-size: 0.6875rem;
-  letter-spacing: 0.04em;
+.contact__value {
+  color: var(--ink);
 }
 
 /* ==========================================================================
