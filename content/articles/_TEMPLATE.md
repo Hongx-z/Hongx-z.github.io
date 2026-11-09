@@ -28,6 +28,9 @@ tags:
   - Craft                              # "field-notes" are the same tag.
                                        # Chinese tags work too: 随笔 keeps its own name.
 # cover: /images/your-image.jpg        # optional; file goes in public/images/
+# source: https://mp.weixin.qq.com/s/xxxx   # optional. Where it was first published.
+                                       # Used by pieces tagged 微信公众号: the article
+                                       # page then shows a "阅读原文" link back to it.
 # draft: true                          # optional; hides it from the built site
 # lang: zh                             # optional. Leave it out and the site decides
                                        # by reading the body — write in Chinese and
