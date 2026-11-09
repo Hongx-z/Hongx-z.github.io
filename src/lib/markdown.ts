@@ -25,9 +25,43 @@ export async function markdownToHtml(markdown: string): Promise<string> {
       properties: { className: ['heading-anchor'] },
     })
     .use(rehypeStringify)
-    .process(markdown);
+    .process(cjkParagraphBreaks(markdown));
 
   return String(file);
+}
+
+const CJK_LINE_END = /[\p{Script=Han}。，；：？！…—、」』）》]$/u;
+const CJK_LINE_START = /^[\p{Script=Han}「『（《]/u;
+const STRUCTURED_LINE = /^\s*(?:[-*+]|>|#{1,6}\s|\d+[.)]|```|~~~|\|)/;
+
+/**
+ * Chinese is often drafted one paragraph per line, without the blank line
+ * Markdown wants between paragraphs — which would glue every pair of lines
+ * into one run-on block. When a plain prose line ends in a Chinese character
+ * or punctuation and the next plain prose line starts with one, treat the
+ * newline as a paragraph break. Lists, quotes, tables and code fences are
+ * left exactly as written, so English files are untouched too.
+ */
+function cjkParagraphBreaks(markdown: string): string {
+  const lines = markdown.split('\n');
+  const out: string[] = [];
+
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index];
+    out.push(line);
+
+    const next = lines[index + 1];
+    if (next === undefined) continue;
+
+    const current = line.trim();
+    if (!current || !next.trim()) continue;
+    if (STRUCTURED_LINE.test(line) || STRUCTURED_LINE.test(next)) continue;
+    if (CJK_LINE_END.test(current) && CJK_LINE_START.test(next.trim())) {
+      out.push('');
+    }
+  }
+
+  return out.join('\n');
 }
 
 /**

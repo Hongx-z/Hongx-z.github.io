@@ -17,6 +17,12 @@ export interface ArticleMeta {
   tags: string[];
   tagSlugs: string[];
   cover?: string;
+  /**
+   * Where this piece was first published, when that matters — e.g. a WeChat
+   * Official Account article (tagged 微信公众号) links back to the original
+   * with "阅读原文". Plain URL; rendered as an external link.
+   */
+  source?: string;
   draft: boolean;
   readingTime: string;
   /**
@@ -84,6 +90,7 @@ function readArticleFile(slug: string): ArticleMeta & { body: string } {
     tags,
     tagSlugs: tags.map(slugify),
     cover: asString(data.cover) || undefined,
+    source: asString(data.source) || undefined,
     draft: data.draft === true,
     readingTime: readingTime(body),
     // Frontmatter wins, so an unusual piece can say what it is; otherwise we

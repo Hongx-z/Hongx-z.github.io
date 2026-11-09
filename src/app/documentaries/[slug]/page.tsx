@@ -58,49 +58,6 @@ export default async function DocumentaryPage({ params }: PageProps) {
     <article className="container">
       <ReadingProgress />
 
-      <header className="film-header">
-        <p className="eyebrow">
-          <Link href="/documentaries" className="link-underline">
-            Films
-          </Link>
-        </p>
-
-        <h1 className="film-header__title">{film.title}</h1>
-        <p className="film-header__subject">A film about {film.subject}</p>
-
-        <div className="film-meta">
-          {film.date ? (
-            <div className="film-meta__item">
-              <span className="film-meta__label">Completed</span>
-              <span className="film-meta__value">{formatDate(film.date)}</span>
-            </div>
-          ) : null}
-
-          {film.runtime ? (
-            <div className="film-meta__item">
-              <span className="film-meta__label">Runtime</span>
-              <span className="film-meta__value">{film.runtime}</span>
-            </div>
-          ) : null}
-
-          {film.location ? (
-            <div className="film-meta__item">
-              <span className="film-meta__label">Shot in</span>
-              <span className="film-meta__value">{film.location}</span>
-            </div>
-          ) : null}
-
-          <div className="film-meta__item">
-            <span className="film-meta__label">Status</span>
-            <span className="film-meta__value">
-              {film.video ? 'Streaming' : 'Not yet available'}
-            </span>
-          </div>
-        </div>
-      </header>
-
-      <VideoPlayer title={film.title} source={film.video} poster={film.poster} slug={film.slug} />
-
       <div className="article-grid section section--tight">
         {film.poster ? (
           <div className="toc">
@@ -115,11 +72,52 @@ export default async function DocumentaryPage({ params }: PageProps) {
               />
             </div>
           </div>
-        ) : (
-          <div aria-hidden="true" />
-        )}
+        ) : null}
 
         <div className="article-grid__body">
+          <header className="film-header" style={{ paddingTop: 0 }}>
+            <p className="eyebrow">
+              <Link href="/documentaries" className="link-underline">
+                Films
+              </Link>
+            </p>
+
+            <h1 className="film-header__title">{film.title}</h1>
+            <p className="film-header__subject">A film about {film.subject}</p>
+
+            <div className="film-meta">
+              {film.date ? (
+                <div className="film-meta__item">
+                  <span className="film-meta__label">Completed</span>
+                  <span className="film-meta__value">{formatDate(film.date)}</span>
+                </div>
+              ) : null}
+
+              {film.runtime ? (
+                <div className="film-meta__item">
+                  <span className="film-meta__label">Runtime</span>
+                  <span className="film-meta__value">{film.runtime}</span>
+                </div>
+              ) : null}
+
+              {film.location ? (
+                <div className="film-meta__item">
+                  <span className="film-meta__label">Shot in</span>
+                  <span className="film-meta__value">{film.location}</span>
+                </div>
+              ) : null}
+
+              <div className="film-meta__item">
+                <span className="film-meta__label">Status</span>
+                <span className="film-meta__value">
+                  {film.video ? 'Streaming' : 'Not yet available'}
+                </span>
+              </div>
+            </div>
+          </header>
+
+          <VideoPlayer title={film.title} source={film.video} poster={film.poster} slug={film.slug} />
+
           <Prose html={film.html} />
 
           {credits.length > 0 ? (

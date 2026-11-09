@@ -1243,6 +1243,20 @@ main {
   margin-inline: 0.06em;
 }
 
+/* Chinese article body: two-character indent on every paragraph, justified
+   the way print Chinese is set. Scoped to article pages on purpose — the
+   same Chinese in a field note or a margin note is interface text, and an
+   indent there would just look untidy. */
+.prose--article.prose--cjk > p {
+  text-indent: 2em;
+  text-align: justify;
+}
+
+.prose--article.prose--cjk blockquote p,
+.prose--article.prose--cjk li p {
+  text-indent: 0;
+}
+
 /* ==========================================================================
    Article page
    ========================================================================== */
@@ -1290,20 +1304,32 @@ main {
   justify-content: space-between;
 }
 
-/* Article + side TOC on wide screens */
+/* Reading pages: the text column sits in the middle of the page, so the
+   empty margins are symmetric — the page reads as a centred column, not a
+   left-aligned one with a hole on the right. Side notes (contents, film
+   still) live in the left margin; the right margin stays empty on purpose. */
 .article-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-8);
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-6);
 }
 
 @media (min-width: 64rem) {
   .article-grid {
-    grid-template-columns: 16rem minmax(0, 1fr);
-    gap: var(--space-8);
+    grid-template-columns: minmax(0, 1fr) minmax(0, var(--measure)) minmax(0, 1fr);
+    gap: var(--space-6);
   }
+
   .article-grid__body {
+    grid-column: 2;
     max-width: var(--measure);
+  }
+
+  .toc {
+    grid-column: 1;
+    justify-self: end;
+    width: 100%;
+    max-width: 13rem;
   }
 }
 
@@ -1313,13 +1339,35 @@ main {
   align-self: start;
 }
 
+.toc__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--rule);
+}
+
 .toc__title {
   font-size: var(--step--1);
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--ink-faint);
-  padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--rule);
+}
+
+.toc__toggle {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: var(--step--1);
+  color: var(--ink-faint);
+  transition: color 200ms ease;
+}
+
+.toc__toggle:hover,
+.toc__toggle:focus-visible {
+  color: var(--accent);
 }
 
 .toc__list {

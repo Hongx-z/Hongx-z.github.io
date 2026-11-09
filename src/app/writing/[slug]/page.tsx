@@ -6,6 +6,7 @@ import { ArticleList } from '@/components/ArticleList';
 import { CopyLinkButton } from '@/components/CopyLinkButton';
 import { Prose } from '@/components/Prose';
 import { ReadingProgress } from '@/components/ReadingProgress';
+import { TableOfContents } from '@/components/TableOfContents';
 import { TagRow } from '@/components/TagRow';
 import { site } from '@/data/site';
 import { getArticle, getArticleSlugs, getRelatedArticles } from '@/lib/articles';
@@ -48,58 +49,59 @@ export default async function ArticlePage({ params }: PageProps) {
   const article = await getArticle(slug);
   const related = getRelatedArticles(article);
   const toc = article.headings.filter((heading) => heading.depth === 2);
+  // Pieces with one heading or none don't get a contents column at all —
+  // an empty 16rem gutter beside a short essay is just blank paper.
+  const hasToc = toc.length > 1;
 
   return (
     <article className="container">
       <ReadingProgress />
 
-      <header className="about-head" style={{ paddingBottom: 0 }}>
-        <p className="eyebrow">
-          <Link href="/writing" className="link-underline">
-            Writing
-          </Link>
-        </p>
-
-        <h1 className="article-header__title">{article.title}</h1>
-
-        <p className="article-header__summary">{article.summary}</p>
-
-        <div className="article-header__foot">
-          <span className="meta">
-            <time dateTime={article.date}>{formatDate(article.date)}</time>
-            <span className="dot-sep">·</span>
-            {article.readingTime}
-          </span>
-          <CopyLinkButton />
-        </div>
-      </header>
-
-      {article.cover ? (
-        <figure style={{ marginTop: 'var(--space-6)' }}>
-          {/* eslint-disable-next-line @next/next/no-img-element -- static export */}
-          <img className="cover-image" src={withBase(article.cover)} alt="" />
-        </figure>
-      ) : null}
-
-      <hr className="rule" style={{ marginTop: 'var(--space-6)' }} />
-
       <div className="article-grid section section--tight">
-        {toc.length > 1 ? (
-          <nav className="toc" aria-label="Contents">
-            <p className="toc__title">Contents</p>
-            <ul className="toc__list">
-              {toc.map((heading) => (
-                <li key={heading.id} data-depth={heading.depth}>
-                  <a href={`#${heading.id}`}>{heading.text}</a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        ) : (
-          <div aria-hidden="true" />
-        )}
+        {hasToc ? <TableOfContents headings={toc} /> : null}
 
         <div className="article-grid__body">
+          <header className="article-header">
+            <p className="eyebrow">
+              <Link href="/writing" className="link-underline">
+                Writing
+              </Link>
+            </p>
+
+            <h1 className="article-header__title">{article.title}</h1>
+
+            <p className="article-header__summary">{article.summary}</p>
+
+            <div className="article-header__foot">
+              <span className="meta">
+                <time dateTime={article.date}>{formatDate(article.date)}</time>
+                <span className="dot-sep">·</span>
+                {article.readingTime}
+                {article.source ? (
+                  <>
+                    <span className="dot-sep">·</span>
+                    <a
+                      className="link-underline"
+                      href={article.source}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
+                      {article.lang === 'zh' ? '阅读原文' : 'Read the original'}
+                    </a>
+                  </>
+                ) : null}
+              </span>
+              <CopyLinkButton />
+            </div>
+          </header>
+
+          {article.cover ? (
+            <figure style={{ marginTop: 'var(--space-6)' }}>
+              {/* eslint-disable-next-line @next/next/no-img-element -- static export */}
+              <img className="cover-image" src={withBase(article.cover)} alt="" />
+            </figure>
+          ) : null}
+
           <Prose html={article.html} variant="article" lang={article.lang} />
 
           <footer className="article-foot">
